@@ -1,0 +1,2062 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Laboratório Interativo: Conversão Temporal (n) & Equivalência de Taxas | CEST</title>
+    <meta name="description" content="Laboratório e simulador interativo de conversão de unidades de tempo (dias, meses, bimestres, trimestres, semestres e anos) aplicados a regimes financeiros para o curso de Administração do CEST.">
+    <meta name="author" content="Prof. Msc. Philipe Sampaio Lima">
+
+    <!-- Favicon Data URI -->
+    <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><rect width='100' height='100' rx='20' fill='%23002060'/><circle cx='50' cy='50' r='30' stroke='%230080FF' stroke-width='6' fill='none'/><polyline points='50,30 50,50 65,50' stroke='%230080FF' stroke-width='6' stroke-linecap='round'/></svg>">
+
+    <style>
+        /* ==========================================================================
+           1. VARIÁVEIS CSS E IDENTIDADE VISUAL INSTITUCIONAL CEST
+           ========================================================================== */
+        :root {
+            --primary: #002060;
+            --primary-dark: #001138;
+            --primary-light: #003399;
+            --secondary: #0080FF;
+            --secondary-light: #E6F2FF;
+            --accent: #00A3FF;
+            --accent-light: #F0F8FF;
+            
+            --success: #10B981;
+            --success-light: #D1FAE5;
+            --success-dark: #065F46;
+            
+            --danger: #EF4444;
+            --danger-light: #FEE2E2;
+            --danger-dark: #991B1B;
+            
+            --warning: #F59E0B;
+            --warning-light: #FEF3C7;
+            --warning-dark: #92400E;
+            
+            --info: #0284C7;
+            --info-light: #E0F2FE;
+            --info-dark: #0369A1;
+
+            --background: #F4F7FA;
+            --surface: #FFFFFF;
+            --surface-card: #FFFFFF;
+            --text-primary: #0F172A;
+            --text-secondary: #475569;
+            --text-muted: #64748B;
+            --border: #E2E8F0;
+            --border-hover: #CBD5E1;
+            --border-focus: #0080FF;
+
+            --font-main: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+            --font-mono: "SFMono-Regular", Consolas, "Liberation Mono", Menlo, Courier, monospace;
+
+            --radius-xs: 4px;
+            --radius-sm: 8px;
+            --radius-md: 14px;
+            --radius-lg: 20px;
+            
+            --shadow-xs: 0 1px 2px rgba(0, 32, 96, 0.04);
+            --shadow-sm: 0 2px 5px rgba(0, 32, 96, 0.06);
+            --shadow-md: 0 6px 20px -3px rgba(0, 32, 96, 0.09);
+            --shadow-lg: 0 14px 34px -5px rgba(0, 32, 96, 0.14);
+
+            --transition-fast: 0.15s ease-in-out;
+            --transition: 0.25s cubic-bezier(0.4, 0, 0.2, 1);
+            --transition-slow: 0.35s ease-out;
+
+            --max-width: 1200px;
+        }
+
+        /* ==========================================================================
+           2. RESET E PADRONIZAÇÃO GLOBAL
+           ========================================================================== */
+        *, *::before, *::after {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        html {
+            scroll-behavior: smooth;
+            font-size: 16px;
+            text-size-adjust: 100%;
+            -webkit-text-size-adjust: 100%;
+        }
+
+        body {
+            font-family: var(--font-main);
+            background-color: var(--background);
+            color: var(--text-primary);
+            line-height: 1.6;
+            -webkit-font-smoothing: antialiased;
+            -moz-osx-font-smoothing: grayscale;
+            overflow-x: hidden;
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+        }
+
+        main {
+            flex: 1 0 auto;
+        }
+
+        a {
+            color: var(--secondary);
+            text-decoration: none;
+            transition: var(--transition);
+        }
+
+        a:hover {
+            color: var(--primary-light);
+        }
+
+        ul, ol {
+            list-style: none;
+        }
+
+        button, input, select, textarea {
+            font: inherit;
+        }
+
+        .container {
+            width: 100%;
+            max-width: var(--max-width);
+            margin-left: auto;
+            margin-right: auto;
+            padding-left: 1.5rem;
+            padding-right: 1.5rem;
+        }
+
+        /* ==========================================================================
+           3. CABEÇALHO E NAVEGAÇÃO FIXA
+           ========================================================================== */
+        header {
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+            background-color: rgba(255, 255, 255, 0.98);
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
+            border-bottom: 1px solid var(--border);
+            box-shadow: var(--shadow-sm);
+            transition: var(--transition);
+        }
+
+        .nav-container {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            height: 74px;
+        }
+
+        .brand-logo {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            font-weight: 800;
+            color: var(--primary);
+            font-size: 1.2rem;
+            letter-spacing: -0.02em;
+        }
+
+        .brand-logo svg {
+            width: 40px;
+            height: 40px;
+            flex-shrink: 0;
+        }
+
+        .brand-divider {
+            width: 1.5px;
+            height: 26px;
+            background-color: var(--border);
+        }
+
+        .brand-sub {
+            font-size: 0.85rem;
+            color: var(--text-muted);
+            font-weight: 600;
+        }
+
+        .nav-links {
+            display: flex;
+            align-items: center;
+            gap: 1.75rem;
+        }
+
+        .nav-link {
+            font-size: 0.925rem;
+            font-weight: 600;
+            color: var(--text-secondary);
+            padding: 0.5rem 0;
+            position: relative;
+        }
+
+        .nav-link::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 0;
+            height: 2.5px;
+            background-color: var(--secondary);
+            transition: var(--transition);
+            border-radius: 2px;
+        }
+
+        .nav-link:hover, .nav-link.active {
+            color: var(--primary);
+        }
+
+        .nav-link:hover::after, .nav-link.active::after {
+            width: 100%;
+        }
+
+        .mobile-menu-btn {
+            display: none;
+            background: none;
+            border: none;
+            cursor: pointer;
+            padding: 8px;
+            color: var(--primary);
+            border-radius: var(--radius-xs);
+        }
+
+        .mobile-menu-btn:focus-visible {
+            outline: 2px solid var(--border-focus);
+        }
+
+        /* ==========================================================================
+           4. HERO SECTION INSTITUCIONAL
+           ========================================================================== */
+        #hero {
+            padding: 4.5rem 0 4rem;
+            background: linear-gradient(135deg, var(--primary) 0%, var(--primary-dark) 100%);
+            color: #FFFFFF;
+            position: relative;
+            overflow: hidden;
+        }
+
+        #hero::before {
+            content: '';
+            position: absolute;
+            top: -25%;
+            right: -10%;
+            width: 550px;
+            height: 550px;
+            background: radial-gradient(circle, rgba(0, 128, 255, 0.22) 0%, rgba(0, 0, 0, 0) 70%);
+            border-radius: 50%;
+            pointer-events: none;
+        }
+
+        .hero-grid {
+            display: grid;
+            grid-template-columns: 1.25fr 0.75fr;
+            gap: 2.5rem;
+            align-items: center;
+            position: relative;
+            z-index: 1;
+        }
+
+        .hero-badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            background-color: rgba(255, 255, 255, 0.12);
+            border: 1px solid rgba(255, 255, 255, 0.22);
+            padding: 6px 14px;
+            border-radius: 20px;
+            font-size: 0.85rem;
+            font-weight: 600;
+            color: var(--secondary-light);
+            margin-bottom: 1.25rem;
+        }
+
+        .hero-title {
+            font-size: clamp(2rem, 3.4vw, 2.75rem);
+            font-weight: 800;
+            line-height: 1.2;
+            letter-spacing: -0.03em;
+            margin-bottom: 1.25rem;
+        }
+
+        .hero-description {
+            font-size: 1.05rem;
+            color: rgba(255, 255, 255, 0.9);
+            margin-bottom: 2rem;
+            max-width: 640px;
+            line-height: 1.7;
+        }
+
+        .hero-actions {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 1rem;
+        }
+
+        .btn {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+            padding: 0.85rem 1.6rem;
+            font-size: 0.95rem;
+            font-weight: 600;
+            border-radius: var(--radius-sm);
+            transition: var(--transition);
+            cursor: pointer;
+            border: none;
+            text-decoration: none;
+            text-align: center;
+        }
+
+        .btn-primary {
+            background-color: var(--secondary);
+            color: #FFFFFF;
+            box-shadow: 0 4px 14px rgba(0, 128, 255, 0.32);
+        }
+
+        .btn-primary:hover {
+            background-color: var(--accent);
+            color: #FFFFFF;
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(0, 128, 255, 0.42);
+        }
+
+        .btn-secondary {
+            background-color: rgba(255, 255, 255, 0.12);
+            color: #FFFFFF;
+            border: 1px solid rgba(255, 255, 255, 0.25);
+        }
+
+        .btn-secondary:hover {
+            background-color: rgba(255, 255, 255, 0.22);
+            color: #FFFFFF;
+            transform: translateY(-2px);
+        }
+
+        .btn-outline {
+            background-color: transparent;
+            color: var(--primary);
+            border: 1.5px solid var(--border);
+        }
+
+        .btn-outline:hover {
+            border-color: var(--secondary);
+            color: var(--secondary);
+            background-color: var(--secondary-light);
+        }
+
+        .hero-card {
+            background: rgba(255, 255, 255, 0.08);
+            backdrop-filter: blur(14px);
+            -webkit-backdrop-filter: blur(14px);
+            border: 1px solid rgba(255, 255, 255, 0.18);
+            border-radius: var(--radius-md);
+            padding: 2rem;
+            box-shadow: var(--shadow-lg);
+        }
+
+        .hero-card-header {
+            border-bottom: 1px solid rgba(255, 255, 255, 0.16);
+            padding-bottom: 0.85rem;
+            margin-bottom: 1.5rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .hero-card-title {
+            font-size: 0.85rem;
+            text-transform: uppercase;
+            letter-spacing: 0.08em;
+            color: var(--secondary-light);
+            font-weight: 700;
+        }
+
+        .hero-card-body {
+            display: flex;
+            flex-direction: column;
+            gap: 1.25rem;
+        }
+
+        .info-item {
+            display: flex;
+            align-items: flex-start;
+            gap: 12px;
+        }
+
+        .info-icon {
+            width: 22px;
+            height: 22px;
+            color: var(--secondary);
+            margin-top: 2px;
+            flex-shrink: 0;
+        }
+
+        .info-label {
+            font-size: 0.8rem;
+            color: rgba(255, 255, 255, 0.7);
+            display: block;
+            margin-bottom: 2px;
+        }
+
+        .info-val {
+            font-size: 0.95rem;
+            font-weight: 600;
+            color: #FFFFFF;
+        }
+
+        /* ==========================================================================
+           5. ESTRUTURA PADRONIZADA DE SEÇÕES
+           ========================================================================== */
+        section {
+            padding: 4.5rem 0;
+        }
+
+        .section-header {
+            text-align: center;
+            max-width: 800px;
+            margin: 0 auto 3rem;
+        }
+
+        .section-tag {
+            display: inline-block;
+            font-size: 0.8rem;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 0.08em;
+            color: var(--secondary);
+            background-color: var(--secondary-light);
+            padding: 4px 14px;
+            border-radius: 20px;
+            margin-bottom: 0.75rem;
+        }
+
+        .section-title {
+            font-size: clamp(1.75rem, 2.6vw, 2.25rem);
+            font-weight: 800;
+            color: var(--primary);
+            letter-spacing: -0.02em;
+            line-height: 1.25;
+            margin-bottom: 0.85rem;
+        }
+
+        .section-description {
+            font-size: 1.05rem;
+            color: var(--text-secondary);
+            line-height: 1.7;
+        }
+
+        /* ==========================================================================
+           6. IDENTIFICAÇÃO DISCENTE
+           ========================================================================== */
+        #identificacao {
+            background-color: var(--surface);
+            border-bottom: 1px solid var(--border);
+            padding: 2.25rem 0;
+        }
+
+        .ident-card {
+            background: var(--surface);
+            border: 1px solid var(--border);
+            border-radius: var(--radius-md);
+            padding: 1.75rem 2rem;
+            box-shadow: var(--shadow-sm);
+            border-left: 5px solid var(--secondary);
+        }
+
+        .ident-grid {
+            display: grid;
+            grid-template-columns: 2fr 1fr 1fr 1fr;
+            gap: 1.5rem;
+            align-items: flex-end;
+        }
+
+        .form-group {
+            display: flex;
+            flex-direction: column;
+            gap: 0.45rem;
+        }
+
+        .form-label {
+            font-size: 0.825rem;
+            font-weight: 700;
+            color: var(--primary);
+            text-transform: uppercase;
+            letter-spacing: 0.03em;
+        }
+
+        .form-control {
+            width: 100%;
+            padding: 0.75rem 1rem;
+            font-size: 0.95rem;
+            font-family: var(--font-main);
+            color: var(--text-primary);
+            background-color: var(--surface);
+            border: 1.5px solid var(--border);
+            border-radius: var(--radius-sm);
+            transition: var(--transition);
+        }
+
+        .form-control:focus {
+            outline: none;
+            border-color: var(--border-focus);
+            box-shadow: 0 0 0 3px rgba(0, 128, 255, 0.15);
+        }
+
+        .form-control:disabled, .form-control[readonly] {
+            background-color: var(--background);
+            color: var(--text-secondary);
+            cursor: not-allowed;
+        }
+
+        /* ==========================================================================
+           7. SEÇÃO TEÓRICA E RELAÇÕES TEMPORAIS
+           ========================================================================== */
+        .formula-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 2rem;
+        }
+
+        .card {
+            background-color: var(--surface);
+            border-radius: var(--radius-md);
+            padding: 2.25rem;
+            border: 1px solid var(--border);
+            box-shadow: var(--shadow-sm);
+            transition: var(--transition);
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+        }
+
+        .card:hover {
+            box-shadow: var(--shadow-md);
+            border-color: rgba(0, 128, 255, 0.35);
+        }
+
+        .card-header-flex {
+            display: flex;
+            align-items: center;
+            gap: 14px;
+            margin-bottom: 1.25rem;
+        }
+
+        .card-icon-box {
+            width: 48px;
+            height: 48px;
+            border-radius: var(--radius-sm);
+            background-color: var(--secondary-light);
+            color: var(--primary);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            flex-shrink: 0;
+        }
+
+        .card-icon-box svg {
+            width: 24px;
+            height: 24px;
+        }
+
+        .card-title {
+            font-size: 1.25rem;
+            font-weight: 700;
+            color: var(--primary);
+        }
+
+        .formula-box {
+            background-color: var(--background);
+            border: 1px solid var(--border);
+            border-radius: var(--radius-sm);
+            padding: 1.5rem;
+            margin: 1.25rem 0;
+            text-align: center;
+            border-left: 4px solid var(--secondary);
+        }
+
+        .formula-main {
+            font-size: 1.35rem;
+            font-weight: 700;
+            color: var(--primary);
+            font-family: Georgia, Cambria, "Times New Roman", Times, serif;
+            letter-spacing: 0.03em;
+            margin-bottom: 0.4rem;
+        }
+
+        .table-custom {
+            width: 100%;
+            border-collapse: collapse;
+            font-size: 0.88rem;
+            margin-top: 1rem;
+        }
+
+        .table-custom th, .table-custom td {
+            padding: 10px 12px;
+            border: 1px solid var(--border);
+            text-align: left;
+        }
+
+        .table-custom th {
+            background-color: var(--secondary-light);
+            color: var(--primary);
+            font-weight: 700;
+        }
+
+        .table-custom tbody tr:hover {
+            background-color: var(--accent-light);
+        }
+
+        .var-tag {
+            font-weight: 700;
+            color: var(--primary);
+            background-color: var(--secondary-light);
+            padding: 2px 6px;
+            border-radius: var(--radius-xs);
+            font-family: var(--font-mono);
+            font-size: 0.82rem;
+        }
+
+        /* ==========================================================================
+           8. CALCULADORA TEMPORAL E SIMULADOR
+           ========================================================================== */
+        #calculadora-temporal {
+            background-color: var(--surface);
+            border-top: 1px solid var(--border);
+            border-bottom: 1px solid var(--border);
+        }
+
+        .calc-grid {
+            display: grid;
+            grid-template-columns: 1.15fr 0.85fr;
+            gap: 2.25rem;
+        }
+
+        .results-panel {
+            background: linear-gradient(135deg, var(--primary) 0%, var(--primary-dark) 100%);
+            color: #FFFFFF;
+            border-radius: var(--radius-md);
+            padding: 2.25rem;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+            box-shadow: var(--shadow-md);
+        }
+
+        .result-item {
+            border-bottom: 1px solid rgba(255, 255, 255, 0.16);
+            padding-bottom: 1.25rem;
+            margin-bottom: 1.25rem;
+        }
+
+        .result-item:last-child {
+            border-bottom: none;
+            margin-bottom: 0;
+            padding-bottom: 0;
+        }
+
+        .result-label {
+            font-size: 0.85rem;
+            color: var(--secondary-light);
+            text-transform: uppercase;
+            letter-spacing: 0.06em;
+            margin-bottom: 0.35rem;
+            display: block;
+            font-weight: 700;
+        }
+
+        .result-value {
+            font-size: 2.1rem;
+            font-weight: 800;
+            color: #FFFFFF;
+            letter-spacing: -0.02em;
+            line-height: 1.15;
+        }
+
+        .result-sub {
+            font-size: 0.875rem;
+            color: rgba(255, 255, 255, 0.8);
+            margin-top: 0.35rem;
+            display: block;
+        }
+
+        /* ==========================================================================
+           9. BANCO DE QUESTÕES DINÂMICAS
+           ========================================================================== */
+        #questoes {
+            background-color: var(--background);
+        }
+
+        .quiz-controls-bar {
+            background-color: var(--surface);
+            border: 1px solid var(--border);
+            border-radius: var(--radius-md);
+            padding: 1.5rem 2rem;
+            margin-bottom: 2.5rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            box-shadow: var(--shadow-sm);
+            flex-wrap: wrap;
+            gap: 1.25rem;
+        }
+
+        .score-counter {
+            display: flex;
+            align-items: center;
+            gap: 2rem;
+        }
+
+        .score-box {
+            display: flex;
+            flex-direction: column;
+        }
+
+        .score-title {
+            font-size: 0.75rem;
+            text-transform: uppercase;
+            font-weight: 700;
+            color: var(--text-muted);
+            letter-spacing: 0.05em;
+        }
+
+        .score-number {
+            font-size: 1.6rem;
+            font-weight: 800;
+            color: var(--primary);
+            line-height: 1.2;
+        }
+
+        .question-card {
+            background-color: var(--surface);
+            border: 1px solid var(--border);
+            border-radius: var(--radius-md);
+            padding: 2.25rem;
+            margin-bottom: 1.75rem;
+            box-shadow: var(--shadow-sm);
+            transition: var(--transition);
+        }
+
+        .question-card:hover {
+            border-color: rgba(0, 128, 255, 0.4);
+            box-shadow: var(--shadow-md);
+        }
+
+        .question-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+            margin-bottom: 1.25rem;
+            border-bottom: 1px solid var(--border);
+            padding-bottom: 0.85rem;
+            gap: 1rem;
+        }
+
+        .question-num {
+            font-size: 1rem;
+            font-weight: 800;
+            color: var(--primary);
+            letter-spacing: -0.01em;
+        }
+
+        .target-var-badge {
+            font-size: 0.775rem;
+            font-weight: 700;
+            padding: 4px 12px;
+            border-radius: 14px;
+            background-color: var(--secondary-light);
+            color: var(--primary);
+            white-space: nowrap;
+        }
+
+        .question-text {
+            font-size: 1.05rem;
+            color: var(--text-primary);
+            line-height: 1.75;
+            margin-bottom: 1.5rem;
+        }
+
+        .question-vars-given {
+            background-color: var(--background);
+            border-radius: var(--radius-sm);
+            padding: 1.15rem 1.4rem;
+            margin-bottom: 1.5rem;
+            display: flex;
+            flex-wrap: wrap;
+            gap: 1.5rem;
+            border: 1px dashed var(--border);
+        }
+
+        .given-item {
+            font-size: 0.925rem;
+            color: var(--text-secondary);
+        }
+
+        .given-item strong {
+            color: var(--primary);
+        }
+
+        .answer-form-group {
+            display: flex;
+            gap: 1.25rem;
+            align-items: center;
+            flex-wrap: wrap;
+        }
+
+        .input-wrapper {
+            position: relative;
+            display: inline-flex;
+            align-items: center;
+            max-width: 290px;
+            width: 100%;
+        }
+
+        .currency-prefix {
+            position: absolute;
+            left: 14px;
+            font-size: 0.95rem;
+            font-weight: 700;
+            color: var(--text-muted);
+            pointer-events: none;
+        }
+
+        .answer-input {
+            width: 100%;
+            padding: 0.75rem 1rem 0.75rem 2.5rem;
+            font-size: 1rem;
+            font-weight: 600;
+            font-family: var(--font-mono);
+            border: 1.5px solid var(--border);
+            border-radius: var(--radius-sm);
+            transition: var(--transition);
+        }
+
+        .answer-input.no-prefix {
+            padding-left: 1rem;
+        }
+
+        .answer-input:focus {
+            outline: none;
+            border-color: var(--border-focus);
+            box-shadow: 0 0 0 3px rgba(0, 128, 255, 0.15);
+        }
+
+        .feedback-box {
+            margin-top: 1.5rem;
+            padding: 1.35rem;
+            border-radius: var(--radius-sm);
+            display: none;
+            animation: fadeIn 0.3s ease;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(-8px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .feedback-box.correct {
+            display: block;
+            background-color: var(--success-light);
+            border: 1.5px solid #A7F3D0;
+            color: var(--success-dark);
+        }
+
+        .feedback-box.incorrect {
+            display: block;
+            background-color: var(--danger-light);
+            border: 1.5px solid #FECACA;
+            color: var(--danger-dark);
+        }
+
+        .calc-memory {
+            margin-top: 0.85rem;
+            padding-top: 0.85rem;
+            border-top: 1px solid rgba(0, 0, 0, 0.08);
+            font-size: 0.925rem;
+            line-height: 1.65;
+            color: var(--text-secondary);
+        }
+
+        .calc-memory code {
+            font-family: var(--font-mono);
+            background: rgba(255, 255, 255, 0.75);
+            padding: 3px 7px;
+            border-radius: var(--radius-xs);
+            font-size: 0.88rem;
+            color: var(--text-primary);
+        }
+
+        /* ==========================================================================
+           10. EXPORTAÇÃO PDF
+           ========================================================================== */
+        #exportar {
+            background-color: var(--surface);
+            border-top: 1px solid var(--border);
+            border-bottom: 1px solid var(--border);
+        }
+
+        .export-card {
+            background: var(--background);
+            border: 2px dashed var(--secondary);
+            border-radius: var(--radius-md);
+            padding: 3.5rem 2rem;
+            text-align: center;
+            max-width: 820px;
+            margin: 0 auto;
+        }
+
+        /* ==========================================================================
+           11. RODAPÉ INSTITUCIONAL
+           ========================================================================== */
+        footer {
+            background-color: var(--primary-dark);
+            color: #FFFFFF;
+            padding: 4rem 0 2.5rem;
+            border-top: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .footer-grid {
+            display: grid;
+            grid-template-columns: 1.5fr 1fr 1fr;
+            gap: 3rem;
+            margin-bottom: 2.5rem;
+        }
+
+        .footer-title {
+            font-size: 1rem;
+            font-weight: 700;
+            margin-bottom: 1rem;
+            color: var(--secondary-light);
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+        }
+
+        .footer-desc {
+            font-size: 0.88rem;
+            color: rgba(255, 255, 255, 0.72);
+            line-height: 1.7;
+        }
+
+        .back-to-top {
+            position: fixed;
+            bottom: 2rem;
+            right: 2rem;
+            width: 46px;
+            height: 46px;
+            background-color: var(--secondary);
+            color: #FFFFFF;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            box-shadow: var(--shadow-md);
+            cursor: pointer;
+            opacity: 0;
+            visibility: hidden;
+            transition: var(--transition);
+            border: none;
+            z-index: 99;
+        }
+
+        .back-to-top.visible {
+            opacity: 1;
+            visibility: visible;
+        }
+
+        .back-to-top:hover {
+            background-color: var(--primary);
+            transform: translateY(-3px);
+        }
+
+        /* ==========================================================================
+           12. ESTILOS DE IMPRESSÃO / PDF ACADÊMICO
+           ========================================================================== */
+        @media print {
+            @page {
+                size: A4;
+                margin: 12mm 10mm;
+            }
+
+            header, #hero, #calculadora-temporal, .quiz-controls-bar, .hero-actions,
+            .btn, .back-to-top, footer, .mobile-menu-btn, #exportar {
+                display: none !important;
+            }
+
+            body {
+                background: #FFFFFF !important;
+                color: #000000 !important;
+                font-size: 9.5pt;
+            }
+
+            .container {
+                max-width: 100% !important;
+                padding: 0 !important;
+            }
+
+            section {
+                padding: 6px 0 !important;
+            }
+
+            .print-header {
+                display: block !important;
+                border-bottom: 2px solid var(--primary);
+                padding-bottom: 8px;
+                margin-bottom: 14px;
+            }
+
+            .print-header-top {
+                display: flex;
+                justify-content: space-between;
+                align-items: center;
+            }
+
+            .print-title {
+                font-size: 14pt;
+                font-weight: bold;
+                color: var(--primary) !important;
+            }
+
+            .ident-card {
+                box-shadow: none !important;
+                border: 1px solid #ccc !important;
+                padding: 10px !important;
+                margin-bottom: 12px;
+                page-break-inside: avoid;
+            }
+
+            .ident-grid {
+                grid-template-columns: 2fr 1fr 1fr 1fr !important;
+                gap: 8px !important;
+            }
+
+            .question-card {
+                box-shadow: none !important;
+                border: 1px solid #ddd !important;
+                padding: 12px !important;
+                margin-bottom: 12px !important;
+                page-break-inside: avoid;
+            }
+
+            .feedback-box {
+                display: block !important;
+                border: 1px solid #ccc !important;
+                background-color: #F8FAFC !important;
+                color: #000000 !important;
+                padding: 10px !important;
+                margin-top: 8px !important;
+            }
+        }
+
+        .print-header {
+            display: none;
+        }
+
+        /* ==========================================================================
+           13. RESPONSIVIDADE
+           ========================================================================== */
+        @media (max-width: 992px) {
+            .hero-grid, .formula-grid, .calc-grid {
+                grid-template-columns: 1fr;
+            }
+            .ident-grid {
+                grid-template-columns: 1fr 1fr;
+            }
+            .footer-grid {
+                grid-template-columns: 1fr;
+                gap: 2rem;
+            }
+        }
+
+        @media (max-width: 768px) {
+            .nav-links {
+                display: none;
+                position: absolute;
+                top: 74px;
+                left: 0;
+                width: 100%;
+                background-color: var(--surface);
+                flex-direction: column;
+                padding: 1.5rem;
+                border-bottom: 1px solid var(--border);
+                box-shadow: var(--shadow-md);
+                gap: 1rem;
+            }
+            .nav-links.active {
+                display: flex;
+            }
+            .mobile-menu-btn {
+                display: block;
+            }
+            .ident-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <!-- CABEÇALHO EXCLUSIVO PARA IMPRESSÃO / PDF -->
+    <div class="print-header container">
+        <div class="print-header-top">
+            <div>
+                <h1 class="print-title">CEST - Centro Universitário Santa Terezinha</h1>
+                <p style="font-size: 10pt; font-weight: 600; color: #475569;">Curso de Administração • Matemática Financeira</p>
+                <p style="font-size: 8.5pt; color: #64748B;">Docente: Prof. Msc. Philipe Sampaio Lima</p>
+            </div>
+            <div style="text-align: right;">
+                <span style="font-size: 11pt; font-weight: bold; color: #002060;">RELATÓRIO DE EQUIVALÊNCIA TEMPORAL</span><br>
+                <span id="printTimestamp" style="font-size: 8pt; color: #64748B;"></span>
+            </div>
+        </div>
+    </div>
+
+    <!-- CABEÇALHO INSTITUCIONAL / NAVEGAÇÃO -->
+    <header>
+        <div class="container nav-container">
+            <a href="#" class="brand-logo" aria-label="CEST Matemática Financeira">
+                <svg viewBox="0 0 100 100" fill="none" xmlns="http://www.w3.org/2000/svg">
+                    <rect width="100" height="100" rx="18" fill="#002060"/>
+                    <circle cx="50" cy="50" r="30" stroke="#FFFFFF" stroke-width="8"/>
+                    <polyline points="50,30 50,50 65,50" stroke="#0080FF" stroke-width="8" stroke-linecap="round"/>
+                </svg>
+                <span>CEST</span>
+                <span class="brand-divider"></span>
+                <span class="brand-sub">Equivalência Temporal & Juros</span>
+            </a>
+
+            <button class="mobile-menu-btn" id="mobileMenuBtn" aria-label="Alternar Menu">
+                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 12h18M3 6h18M3 18h18"/></svg>
+            </button>
+
+            <nav>
+                <ul class="nav-links" id="navLinks">
+                    <li><a href="#identificacao" class="nav-link">Identificação</a></li>
+                    <li><a href="#formulas" class="nav-link">Tabelas & Fórmulas</a></li>
+                    <li><a href="#calculadora-temporal" class="nav-link">Calculadora de Tempo</a></li>
+                    <li><a href="#questoes" class="nav-link">Questões Dinâmicas</a></li>
+                    <li><a href="#exportar" class="nav-link">Exportar Relatório</a></li>
+                </ul>
+            </nav>
+        </div>
+    </header>
+
+    <main>
+        <!-- HERO SECTION -->
+        <section id="hero">
+            <div class="container hero-grid">
+                <div>
+                    <div class="hero-badge">
+                        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
+                        Ambiente de Ensino e Avaliação Quantitativa
+                    </div>
+                    <h1 class="hero-title">Transformações de Tempo & Equivalência Financeira</h1>
+                    <p class="hero-description">
+                        Em Matemática Financeira e Engenharia Econômica, vigora o axioma fundamental da homogeneidade periódica: <strong>a taxa de juros (i) e o número de períodos (n) devem estar estritamente na mesma unidade temporal</strong>. Domine a conversão exata e comercial entre dias, meses, bimestres, trimestres, semestres e anos no regime composto.
+                    </p>
+                    <div class="hero-actions">
+                        <a href="#questoes" class="btn btn-primary">
+                            Iniciar Lista de Questões
+                            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+                        </a>
+                        <a href="#calculadora-temporal" class="btn btn-secondary">
+                            Acessar Calculadora de Tempo
+                        </a>
+                    </div>
+                </div>
+
+                <div class="hero-card">
+                    <div class="hero-card-header">
+                        <span class="hero-card-title">Convenções de Mercado</span>
+                        <span style="font-size: 0.75rem; background: var(--secondary); color: #fff; padding: 2px 8px; border-radius: 8px; font-weight: 700;">Base Normativa</span>
+                    </div>
+                    <div class="hero-card-body">
+                        <div class="info-item">
+                            <svg class="info-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="4" width="18" height="18" rx="2" ry="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg>
+                            <div>
+                                <span class="info-label">Convenção Comercial (Ordinária)</span>
+                                <span class="info-val">Mês Comercial = 30 dias | Ano Comercial = 360 dias</span>
+                            </div>
+                        </div>
+
+                        <div class="info-item">
+                            <svg class="info-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 14 10"/></svg>
+                            <div>
+                                <span class="info-label">Convenção Exata (Civil)</span>
+                                <span class="info-val">Ano Civil = 365 dias (366 dias se bissexto)</span>
+                            </div>
+                        </div>
+
+                        <div class="info-item">
+                            <svg class="info-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/></svg>
+                            <div>
+                                <span class="info-label">Tolerância para Arredondamentos</span>
+                                <span class="info-val">±1,5% de margem aceita para frações temporais</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- IDENTIFICAÇÃO DO ALUNO -->
+        <section id="identificacao">
+            <div class="container">
+                <div class="ident-card">
+                    <div style="margin-bottom: 1.25rem;">
+                        <span class="section-tag">Identificação Discente</span>
+                        <h2 style="font-size: 1.3rem; color: var(--primary); font-weight: 800;">Registro da Sessão Acadêmica</h2>
+                    </div>
+                    <div class="ident-grid">
+                        <div class="form-group">
+                            <label class="form-label" for="alunoNome">Nome Completo do Aluno *</label>
+                            <input type="text" id="alunoNome" class="form-control" placeholder="Digite seu nome completo..." required>
+                        </div>
+                        <div class="form-group">
+                            <label class="form-label" for="alunoMatricula">Matrícula / Turma</label>
+                            <input type="text" id="alunoMatricula" class="form-control" placeholder="Ex: ADM-2026.2">
+                        </div>
+                        <div class="form-group">
+                            <label class="form-label" for="dataPreenchimento">Data da Sessão</label>
+                            <input type="text" id="dataPreenchimento" class="form-control" readonly>
+                        </div>
+                        <div class="form-group">
+                            <label class="form-label" for="horaPreenchimento">Hora de Acesso</label>
+                            <input type="text" id="horaPreenchimento" class="form-control" readonly>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- FÓRMULAS E RELAÇÕES TEMPORAIS -->
+        <section id="formulas">
+            <div class="container">
+                <div class="section-header">
+                    <span class="section-tag">Fundamentação Algébrica</span>
+                    <h2 class="section-title">Equivalência de Tempo & Integração aos Juros</h2>
+                    <p class="section-description">
+                        Para o cálculo de FV = PV · (1 + i)ⁿ, se a taxa i for expressa ao ano, a variável de tempo n deve obrigatoriamente estar em anos. Caso a taxa seja mensal, o tempo n deve ser parametrizado em meses.
+                    </p>
+                </div>
+
+                <div class="formula-grid">
+                    <!-- Tabela de Conversão -->
+                    <div class="card">
+                        <div>
+                            <div class="card-header-flex">
+                                <div class="card-icon-box">
+                                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 14 10"/></svg>
+                                </div>
+                                <div>
+                                    <h3 class="card-title">Matriz de Equivalência Periódica</h3>
+                                    <p style="font-size: 0.85rem; color: var(--text-muted);">Fatores canônicos pelo regime comercial ordinário</p>
+                                </div>
+                            </div>
+
+                            <table class="table-custom">
+                                <thead>
+                                    <tr>
+                                        <th>Unidade</th>
+                                        <th>Em Dias</th>
+                                        <th>Em Meses</th>
+                                        <th>Em Anos</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr>
+                                        <td><strong>1 Dia</strong></td>
+                                        <td>1</td>
+                                        <td>1/30 ≈ 0,0333</td>
+                                        <td>1/360 ≈ 0,002778</td>
+                                    </tr>
+                                    <tr>
+                                        <td><strong>1 Mês</strong></td>
+                                        <td>30</td>
+                                        <td>1</td>
+                                        <td>1/12 ≈ 0,083333</td>
+                                    </tr>
+                                    <tr>
+                                        <td><strong>1 Bimestre</strong></td>
+                                        <td>60</td>
+                                        <td>2</td>
+                                        <td>2/12 = 1/6 ≈ 0,1667</td>
+                                    </tr>
+                                    <tr>
+                                        <td><strong>1 Trimestre</strong></td>
+                                        <td>90</td>
+                                        <td>3</td>
+                                        <td>3/12 = 1/4 = 0,25</td>
+                                    </tr>
+                                    <tr>
+                                        <td><strong>1 Semestre</strong></td>
+                                        <td>180</td>
+                                        <td>6</td>
+                                        <td>6/12 = 1/2 = 0,50</td>
+                                    </tr>
+                                    <tr>
+                                        <td><strong>1 Ano</strong></td>
+                                        <td>360 (ou 365 exato)</td>
+                                        <td>12</td>
+                                        <td>1,00</td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+
+                        <div style="margin-top: 1.25rem; font-size: 0.85rem; color: var(--text-secondary); border-top: 1px solid var(--border); padding-top: 0.75rem;">
+                            <strong>Regra de Conversão de Período:</strong><br>
+                            • Para converter unidade menor para maior: divida pelo fator correspondente.<br>
+                            • Para converter unidade maior para menor: multiplique pelo fator correspondente.
+                        </div>
+                    </div>
+
+                    <!-- Aplicação nos Juros Compostos -->
+                    <div class="card">
+                        <div>
+                            <div class="card-header-flex">
+                                <div class="card-icon-box">
+                                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="22 12 18 12 15 21 9 3 6 12 2 12"/></svg>
+                                </div>
+                                <div>
+                                    <h3 class="card-title">O Expoente Fracionário (n)</h3>
+                                    <p style="font-size: 0.85rem; color: var(--text-muted);">Compatibilização de taxa efetiva e fluxo temporal</p>
+                                </div>
+                            </div>
+
+                            <div class="formula-box">
+                                <div class="formula-main" style="color: var(--secondary);">FV = PV · (1 + i)ⁿ</div>
+                                <div style="font-size: 0.9rem; color: var(--text-secondary); margin-top: 0.4rem;">
+                                    n = Tempo Total na Unidade da Taxa / Período Unitário Base
+                                </div>
+                            </div>
+
+                            <div style="font-size: 0.9rem; color: var(--text-secondary); line-height: 1.7;">
+                                <p><strong>Demonstração Numérica Aplicada:</strong></p>
+                                <p>Deseja-se aplicar um capital à taxa de <strong>12% ao ano</strong> (i = 0,12 ao ano) durante <strong>45 dias comerciais</strong>:</p>
+                                <div style="background: var(--background); padding: 10px 14px; border-radius: var(--radius-sm); margin: 8px 0; font-family: var(--font-mono); font-size: 0.88rem; border-left: 3px solid var(--primary);">
+                                    n = 45 / 360 = 0,125 ano<br>
+                                    FV = PV · (1 + 0,12)⁰˒¹²⁵
+                                </div>
+                                <p style="font-size: 0.85rem; color: var(--text-muted);">
+                                    No regime composto, o expoente admite valores fracionários contínuos, garantindo rigor financeiro na proporcionalidade exponencial de juros pró-rata die.
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- CALCULADORA DE CONVERSÃO DE TEMPO & SIMULADOR -->
+        <section id="calculadora-temporal">
+            <div class="container">
+                <div class="section-header">
+                    <span class="section-tag">Laboratório Computacional</span>
+                    <h2 class="section-title">Calculadora Universal de Conversão Temporal</h2>
+                    <p class="section-description">
+                        Efetue a conversão direta entre quaisquer grandezas cronológicas do mercado e visualize em tempo real a composição do montante financeiro FV.
+                    </p>
+                </div>
+
+                <div class="calc-grid">
+                    <!-- Painel de Inputs -->
+                    <div class="card">
+                        <div>
+                            <h3 class="card-title" style="margin-bottom: 1.25rem;">Parâmetros da Operação</h3>
+
+                            <div class="form-group" style="margin-bottom: 1.25rem;">
+                                <label class="form-label" for="calcValorTempo">Tempo Original a Converter *</label>
+                                <input type="text" id="calcValorTempo" class="form-control strict-decimal" value="90" placeholder="Ex: 90 ou 4,5">
+                            </div>
+
+                            <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 1.25rem; margin-bottom: 1.25rem;">
+                                <div class="form-group">
+                                    <label class="form-label" for="calcUnidadeOrigem">Unidade de Entrada</label>
+                                    <select id="calcUnidadeOrigem" class="form-control" onchange="executarCalculoConversao()">
+                                        <option value="dias_comercial" selected>Dias (Comercial - 360d)</option>
+                                        <option value="dias_exato">Dias (Civil Exato - 365d)</option>
+                                        <option value="meses">Meses</option>
+                                        <option value="bimestres">Bimestres</option>
+                                        <option value="trimestres">Trimestres</option>
+                                        <option value="semestres">Semestres</option>
+                                        <option value="anos">Anos</option>
+                                    </select>
+                                </div>
+                                <div class="form-group">
+                                    <label class="form-label" for="calcUnidadeDestino">Unidade de Saída (Destino)</label>
+                                    <select id="calcUnidadeDestino" class="form-control" onchange="executarCalculoConversao()">
+                                        <option value="dias_comercial">Dias (Comercial)</option>
+                                        <option value="meses" selected>Meses</option>
+                                        <option value="bimestres">Bimestres</option>
+                                        <option value="trimestres">Trimestres</option>
+                                        <option value="semestres">Semestres</option>
+                                        <option value="anos">Anos</option>
+                                    </select>
+                                </div>
+                            </div>
+
+                            <div style="border-top: 1px dashed var(--border); padding-top: 1.25rem; margin-top: 1rem;">
+                                <span class="form-label" style="display: block; margin-bottom: 0.75rem; color: var(--secondary);">Simulação Financeira Vinculada (Juros Compostos)</span>
+                                <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 1.25rem;">
+                                    <div class="form-group">
+                                        <label class="form-label" for="calcPV">Capital Inicial (PV em R$)</label>
+                                        <input type="text" id="calcPV" class="form-control strict-decimal" value="10000,00">
+                                    </div>
+                                    <div class="form-group">
+                                        <label class="form-label" for="calcTaxa">Taxa i (% no período de destino)</label>
+                                        <input type="text" id="calcTaxa" class="form-control strict-decimal" value="2,0" placeholder="Ex: 2,0 (% a.m., a.a., etc.)">
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <button class="btn btn-primary" style="width: 100%; margin-top: 1.5rem;" onclick="executarCalculoConversao()">
+                            Processar Conversão e Simular Montante
+                        </button>
+                    </div>
+
+                    <!-- Painel de Resultados -->
+                    <div class="results-panel">
+                        <div>
+                            <div class="result-item">
+                                <span class="result-label">Tempo Equivalente Calculado (n)</span>
+                                <div class="result-value" id="resTempoFinal">3,00 meses</div>
+                                <span class="result-sub" id="resTempoDesc">90 dias comerciais convertidos para a unidade de meses</span>
+                            </div>
+
+                            <div class="result-item">
+                                <span class="result-label">Montante Financeiro Final (FV)</span>
+                                <div class="result-value" id="resFVCalculado" style="font-size: 1.75rem; color: #60A5FA;">R$ 10.612,08</div>
+                                <span class="result-sub" id="resFVDesc">FV = PV · (1 + i)ⁿ</span>
+                            </div>
+                        </div>
+
+                        <div style="background: rgba(255, 255, 255, 0.08); padding: 1.25rem; border-radius: var(--radius-sm); border: 1px solid rgba(255, 255, 255, 0.15);">
+                            <span style="font-size: 0.8rem; text-transform: uppercase; letter-spacing: 0.06em; color: var(--secondary-light); font-weight: 700; display: block; margin-bottom: 0.5rem;">Memória da Transformação Temporal</span>
+                            <div id="resMemoriaConversao" style="font-size: 0.88rem; font-family: var(--font-mono); line-height: 1.6; color: #FFFFFF;">
+                                n = 90 dias / 30 = 3 meses<br>
+                                FV = 10.000,00 · (1 + 0,02)³ = R$ 10.612,08
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- QUESTÕES DINÂMICAS -->
+        <section id="questoes">
+            <div class="container">
+                <div class="section-header">
+                    <span class="section-tag">Desafios Práticos</span>
+                    <h2 class="section-title">Lista de Exercícios Dinâmicos: Equivalência de Tempo</h2>
+                    <p class="section-description">
+                        Resolva as 10 situações-problema aplicadas. A cada recarregamento da página, <strong>novos parâmetros cronológicos e valores de capital são sorteados</strong>. Digite as respostas no padrão brasileiro (vírgula como separador decimal).
+                    </p>
+                </div>
+
+                <!-- Painel de Controle e Pontuação -->
+                <div class="quiz-controls-bar">
+                    <div class="score-counter">
+                        <div class="score-box">
+                            <span class="score-title">Progresso</span>
+                            <span class="score-number" id="progressCount">0 / 10 Respondidas</span>
+                        </div>
+                        <div class="score-box">
+                            <span class="score-title">Acertos</span>
+                            <span class="score-number" id="correctCount" style="color: var(--success);">0</span>
+                        </div>
+                    </div>
+
+                    <div style="display: flex; gap: 0.75rem; flex-wrap: wrap;">
+                        <button class="btn btn-outline" onclick="verificarTodasRespostas()">
+                            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="20 6 9 17 4 12"/></svg>
+                            Verificar Todas as Questões
+                        </button>
+                        <a href="#exportar" class="btn btn-primary">
+                            Exportar Relatório PDF
+                        </a>
+                    </div>
+                </div>
+
+                <!-- CONTAINER DINÂMICO DE QUESTÕES -->
+                <div id="questionsContainer"></div>
+            </div>
+        </section>
+
+        <!-- EXPORTAÇÃO EM PDF -->
+        <section id="exportar">
+            <div class="container">
+                <div class="export-card">
+                    <svg style="width: 64px; height: 64px; color: var(--secondary); margin-bottom: 1rem;" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8">
+                        <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/>
+                        <polyline points="14 2 14 8 20 8"/>
+                        <line x1="16" y1="13" x2="8" y2="13"/>
+                        <line x1="16" y1="17" x2="8" y2="17"/>
+                    </svg>
+
+                    <h2 style="font-size: 1.6rem; color: var(--primary); margin-bottom: 0.75rem; font-weight: 800;">Exportar Memória de Cálculos em PDF</h2>
+                    <p style="color: var(--text-secondary); margin-bottom: 2rem; font-size: 1rem; max-width: 620px; margin-left: auto; margin-right: auto; line-height: 1.7;">
+                        Gere a folha de respostas acadêmica oficial com cabeçalho institucional do CEST, identificação discente completa, data e hora de conclusão e memória analítica de cálculo passo a passo.
+                    </p>
+
+                    <button class="btn btn-primary" style="padding: 1rem 2.25rem; font-size: 1.05rem;" onclick="exportarRelatorioPDF()">
+                        Salvar e Exportar Resoluções em PDF
+                    </button>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <!-- RODAPÉ INSTITUCIONAL -->
+    <footer>
+        <div class="container">
+            <div class="footer-grid">
+                <div>
+                    <div style="font-weight: 800; font-size: 1.15rem; margin-bottom: 0.85rem;">CEST — Centro Universitário Santa Terezinha</div>
+                    <p class="footer-desc">
+                        Curso de Bacharelado em Administração • Disciplina de Matemática Financeira.<br>
+                        Ambiente computacional aplicado ao aprimoramento de raciocínio lógico-quantitativo e modelagem de tempo no mercado de capitais.
+                    </p>
+                </div>
+                <div>
+                    <div class="footer-title">Navegação Rápida</div>
+                    <p style="font-size: 0.88rem; line-height: 2;">
+                        <a href="#identificacao" style="color: rgba(255,255,255,0.72);">Identificação</a><br>
+                        <a href="#formulas" style="color: rgba(255,255,255,0.72);">Tabelas de Equivalência</a><br>
+                        <a href="#calculadora-temporal" style="color: rgba(255,255,255,0.72);">Calculadora de Tempo</a><br>
+                        <a href="#questoes" style="color: rgba(255,255,255,0.72);">Exercícios Dinâmicos</a>
+                    </p>
+                </div>
+                <div>
+                    <div class="footer-title">Informações Docentes</div>
+                    <p class="footer-desc">
+                        <strong>Docente:</strong> Prof. Msc. Philipe Sampaio Lima<br>
+                        <strong>Tópico:</strong> Transformações Temporais (n) & Juros Compostos<br>
+                        <strong>Instituição:</strong> CEST — São Luís / MA
+                    </p>
+                </div>
+            </div>
+            <div style="text-align: center; border-top: 1px solid rgba(255,255,255,0.1); padding-top: 1.75rem; font-size: 0.825rem; color: rgba(255,255,255,0.5);">
+                &copy; CEST - Centro Universitário Santa Terezinha. Todos os direitos reservados.
+            </div>
+        </div>
+    </footer>
+
+    <!-- BOTÃO VOLTAR AO TOPO -->
+    <button class="back-to-top" id="backToTopBtn" aria-label="Voltar ao Topo da Página">
+        <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M18 15l-6-6-6 6"/></svg>
+    </button>
+
+    <!-- MOTOR JAVASCRIPT -->
+    <script>
+        // ==========================================================================
+        // 1. CARREGAMENTO DE DATA E HORA DE SESSÃO
+        // ==========================================================================
+        function carregarDataHora() {
+            const agora = new Date();
+            const dataFormatada = agora.toLocaleDateString('pt-BR', { day: '2-digit', month: '2-digit', year: 'numeric' });
+            const horaFormatada = agora.toLocaleTimeString('pt-BR', { hour: '2-digit', minute: '2-digit', second: '2-digit' });
+
+            const dataEl = document.getElementById('dataPreenchimento');
+            const horaEl = document.getElementById('horaPreenchimento');
+            if (dataEl) dataEl.value = dataFormatada;
+            if (horaEl) horaEl.value = horaFormatada;
+
+            const printTimestampEl = document.getElementById('printTimestamp');
+            if (printTimestampEl) {
+                printTimestampEl.innerText = `Gerado em: ${dataFormatada} às ${horaFormatada}`;
+            }
+        }
+
+        // ==========================================================================
+        // 2. PARSER E FORMATAÇÃO DECIMAL BRASILEIRA (COM VÍRGULA)
+        // ==========================================================================
+        function aplicarRestricaoDecimal(elemento) {
+            elemento.addEventListener('keypress', function(e) {
+                const char = e.key;
+                if (!/[0-9,]/.test(char)) {
+                    e.preventDefault();
+                    return false;
+                }
+                if (char === ',' && this.value.includes(',')) {
+                    e.preventDefault();
+                    return false;
+                }
+            });
+
+            elemento.addEventListener('paste', function(e) {
+                e.preventDefault();
+                let pasteData = (e.clipboardData || window.clipboardData).getData('text');
+                pasteData = pasteData.replace(/\./g, ',').replace(/[^0-9,]/g, '');
+                const partes = pasteData.split(',');
+                if (partes.length > 2) {
+                    pasteData = partes[0] + ',' + partes.slice(1).join('');
+                }
+                document.execCommand('insertText', false, pasteData);
+            });
+        }
+
+        function aplicarRegrasDecimaisGlobais() {
+            document.querySelectorAll('.strict-decimal').forEach(input => {
+                aplicarRestricaoDecimal(input);
+            });
+        }
+
+        function parseBR(valorStr) {
+            if (!valorStr) return 0;
+            const limpo = valorStr.toString().trim().replace(/\s/g, '').replace(',', '.');
+            const num = parseFloat(limpo);
+            return isNaN(num) ? 0 : num;
+        }
+
+        function formatBR(num, casas = 2) {
+            if (isNaN(num)) return "0,00";
+            return num.toLocaleString('pt-BR', { minimumFractionDigits: casas, maximumFractionDigits: casas });
+        }
+
+        function formatMoeda(num) {
+            return "R$ " + formatBR(num, 2);
+        }
+
+        function randRange(min, max, step = 1) {
+            const steps = Math.floor((max - min) / step);
+            return min + Math.floor(Math.random() * (steps + 1)) * step;
+        }
+
+        // ==========================================================================
+        // 3. MOTOR DE EQUIVALÊNCIA TEMPORAL E CALCULADORA
+        // ==========================================================================
+        const fatoresEmDias = {
+            'dias_comercial': 1,
+            'dias_exato': 360 / 365,
+            'meses': 30,
+            'bimestres': 60,
+            'trimestres': 90,
+            'semestres': 180,
+            'anos': 360
+        };
+
+        const nomesUnidades = {
+            'dias_comercial': 'dias (comerciais)',
+            'dias_exato': 'dias (exatos)',
+            'meses': 'meses',
+            'bimestres': 'bimestres',
+            'trimestres': 'trimestres',
+            'semestres': 'semestres',
+            'anos': 'anos'
+        };
+
+        function converterTempo(valor, unidadeOrigem, unidadeDestino) {
+            const emDias = valor * fatoresEmDias[unidadeOrigem];
+            const resultado = emDias / fatoresEmDias[unidadeDestino];
+            return resultado;
+        }
+
+        function executarCalculoConversao() {
+            const valInput = parseBR(document.getElementById('calcValorTempo').value);
+            const uOrigem = document.getElementById('calcUnidadeOrigem').value;
+            const uDestino = document.getElementById('calcUnidadeDestino').value;
+
+            const nConvertido = converterTempo(valInput, uOrigem, uDestino);
+
+            const pv = parseBR(document.getElementById('calcPV').value);
+            const taxaPerc = parseBR(document.getElementById('calcTaxa').value);
+            const i = taxaPerc / 100;
+            const fv = pv * Math.pow(1 + i, nConvertido);
+
+            document.getElementById('resTempoFinal').innerText = `${formatBR(nConvertido, 4)} ${nomesUnidades[uDestino]}`;
+            document.getElementById('resTempoDesc').innerText = `${formatBR(valInput, 2)} ${nomesUnidades[uOrigem]} convertidos para ${nomesUnidades[uDestino]}`;
+
+            document.getElementById('resFVCalculado').innerText = formatMoeda(fv);
+            document.getElementById('resFVDesc').innerText = `Para PV = ${formatMoeda(pv)} e taxa de ${formatBR(taxaPerc)}% por ${nomesUnidades[uDestino].slice(0, -1)}`;
+
+            let memoria = `1. Conversão Cronológica:<br>`;
+            memoria += `• ${valInput} ${nomesUnidades[uOrigem]} = ${formatBR(valInput * fatoresEmDias[uOrigem], 2)} dias base.<br>`;
+            memoria += `• n = ${formatBR(valInput * fatoresEmDias[uOrigem], 2)} / ${fatoresEmDias[uDestino]} = <strong>${formatBR(nConvertido, 4)} ${nomesUnidades[uDestino]}</strong>.<br><br>`;
+            memoria += `2. Aplicação no Montante Composto:<br>`;
+            memoria += `• FV = ${formatBR(pv)} · (1 + ${formatBR(i, 4)})^(${formatBR(nConvertido, 4)}) = <strong>${formatMoeda(fv)}</strong>`;
+
+            document.getElementById('resMemoriaConversao').innerHTML = memoria;
+        }
+
+        // ==========================================================================
+        // 4. BANCO DE 10 QUESTÕES DINÂMICAS DE CONVERSÃO TEMPORAL
+        // ==========================================================================
+        let questionsData = [];
+
+        function gerarQuestoesAleatorias() {
+            questionsData = [];
+
+            // Q1: Dias comerciais para Meses
+            const q1_dias = randRange(45, 270, 15);
+            const q1_ans = q1_dias / 30;
+            questionsData.push({
+                id: 1,
+                target: 'n em Meses Comerciais',
+                title: 'Questão 1: Conversão de Dias para Meses (Convenção Comercial)',
+                text: `Um título de crédito com valor negociado em mercado financeiro foi liquidado em <strong>${q1_dias} dias</strong>. Sabendo que a taxa de rentabilidade praticada é expressa ao mês (% a.m.), converta esse prazo de dias para a quantidade exata de meses comerciais correspondente.`,
+                given: [
+                    { label: 'Prazo Decorrido', val: `${q1_dias} dias` },
+                    { label: 'Convenção Aplicável', val: 'Comercial (1 mês = 30 dias)' }
+                ],
+                unit: 'meses',
+                correctVal: q1_ans,
+                formula: 'n = Dias / 30',
+                memory: `Dividindo pelo período canônico do mês comercial (30 dias):<br><code>n = ${q1_dias} / 30 = ${formatBR(q1_ans, 2)} meses</code>`
+            });
+
+            // Q2: Meses para Trimestres
+            const q2_meses = randRange(6, 36, 3);
+            const q2_ans = q2_meses / 3;
+            questionsData.push({
+                id: 2,
+                target: 'n em Trimestres',
+                title: 'Questão 2: Equivalência de Meses em Trimestres',
+                text: `Um contrato de mútuo bancário adota taxa periódica trimestral. Um gestor planeja amortizar a dívida ao final de <strong>${q2_meses} meses</strong>. Qual o valor da variável de tempo n em trimestres a ser inserida no cálculo financeiro?`,
+                given: [
+                    { label: 'Prazo Pactuado', val: `${q2_meses} meses` },
+                    { label: 'Unidade Periódica', val: '1 trimestre = 3 meses' }
+                ],
+                unit: 'trimestres',
+                correctVal: q2_ans,
+                formula: 'n = Meses / 3',
+                memory: `Dividindo o total de meses pela quantidade de meses em um trimestre (3):<br><code>n = ${q2_meses} / 3 = ${formatBR(q2_ans, 2)} trimestres</code>`
+            });
+
+            // Q3: Semestres para Anos
+            const q3_sem = randRange(3, 15, 1);
+            const q3_ans = q3_sem / 2;
+            questionsData.push({
+                id: 3,
+                target: 'n em Anos',
+                title: 'Questão 3: Transformação de Semestres em Anos',
+                text: `Um projeto corporativo de expansão prevê retorno de fluxo de caixa após <strong>${q3_sem} semestres</strong> de maturação. Determine o período equivalente em anos para compatibilização com a taxa anual de atratividade da empresa.`,
+                given: [
+                    { label: 'Prazo de Maturação', val: `${q3_sem} semestres` },
+                    { label: 'Base de Relação', val: '1 ano = 2 semestres' }
+                ],
+                unit: 'anos',
+                correctVal: q3_ans,
+                formula: 'n = Semestres / 2',
+                memory: `Dividindo pelo total de semestres compreendidos em 1 ano (2):<br><code>n = ${q3_sem} / 2 = ${formatBR(q3_ans, 2)} anos</code>`
+            });
+
+            // Q4: Dias comerciais para fração de Ano
+            const q4_dias = randRange(72, 324, 18);
+            const q4_ans = q4_dias / 360;
+            questionsData.push({
+                id: 4,
+                target: 'n em Anos (Comercial)',
+                title: 'Questão 4: Dias Comerciais Expressos em Fração de Ano',
+                text: `Uma nota promissória com vencimento para <strong>${q4_dias} dias</strong> foi descontada sob uma taxa de juros compostos fixada ao ano (% a.a.). Pela convenção do ano comercial de 360 dias, qual a fração decimal exata de ano correspondente?`,
+                given: [
+                    { label: 'Prazo da Operação', val: `${q4_dias} dias` },
+                    { label: 'Ano Base Comercial', val: '360 dias' }
+                ],
+                unit: 'anos',
+                correctVal: q4_ans,
+                formula: 'n = Dias / 360',
+                memory: `Dividindo a quantidade de dias pela base comercial de 360 dias:<br><code>n = ${q4_dias} / 360 = ${formatBR(q4_ans, 4)} anos</code>`
+            });
+
+            // Q5: Meses para Bimestres
+            const q5_meses = randRange(4, 28, 2);
+            const q5_ans = q5_meses / 2;
+            questionsData.push({
+                id: 5,
+                target: 'n em Bimestres',
+                title: 'Questão 5: Conversão de Meses para Bimestres',
+                text: `Uma tesouraria alocou recursos em um fundo de liquidez com capitalização bimestral. Se a aplicação for mantida por <strong>${q5_meses} meses</strong>, determine o número de bimestres correspondente a ser aplicado como expoente n.`,
+                given: [
+                    { label: 'Período Total', val: `${q5_meses} meses` },
+                    { label: 'Unidade Alvo', val: '1 bimestre = 2 meses' }
+                ],
+                unit: 'bimestres',
+                correctVal: q5_ans,
+                formula: 'n = Meses / 2',
+                memory: `Como 1 bimestre é composto por 2 meses:<br><code>n = ${q5_meses} / 2 = ${formatBR(q5_ans, 2)} bimestres</code>`
+            });
+
+            // Q6: Montante FV com Dias e Taxa Mensal (Composto)
+            const q6_pv = randRange(6000, 24000, 1000);
+            const q6_i_m = randRange(15, 30, 1) / 10;
+            const q6_dias = randRange(45, 105, 15);
+            const q6_n_meses = q6_dias / 30;
+            const q6_ans = q6_pv * Math.pow(1 + q6_i_m / 100, q6_n_meses);
+            questionsData.push({
+                id: 6,
+                target: 'Montante (FV em R$)',
+                title: 'Questão 6: Montante Composto com Prazo em Dias e Taxa ao Mês',
+                text: `Um capital de <strong>${formatMoeda(q6_pv)}</strong> foi investido em juros compostos à taxa de <strong>${formatBR(q6_i_m)}% ao mês</strong> durante <strong>${q6_dias} dias</strong>. Converta o prazo para meses comerciais e calcule o Montante Final (FV) a ser resgatado.`,
+                given: [
+                    { label: 'Capital Investido (PV)', val: formatMoeda(q6_pv) },
+                    { label: 'Taxa Efetiva Mensal (i)', val: `${formatBR(q6_i_m)}% a.m.` },
+                    { label: 'Prazo', val: `${q6_dias} dias (comerciais)` }
+                ],
+                unit: 'R$',
+                correctVal: q6_ans,
+                formula: 'n = Dias / 30 e FV = PV · (1 + i)ⁿ',
+                memory: `1º) Converter prazo para meses: n = ${q6_dias} / 30 = ${formatBR(q6_n_meses, 2)} meses.<br>2º) Calcular montante composto: <code>FV = ${formatBR(q6_pv)} · (1 + ${formatBR(q6_i_m/100, 4)})^(${formatBR(q6_n_meses, 2)}) = ${formatMoeda(q6_ans)}</code>`
+            });
+
+            // Q7: Montante FV com Meses e Taxa Anual (Composto)
+            const q7_pv = randRange(10000, 35000, 2500);
+            const q7_i_a = randRange(11, 19, 1);
+            const q7_meses = randRange(6, 30, 6);
+            const q7_n_anos = q7_meses / 12;
+            const q7_ans = q7_pv * Math.pow(1 + q7_i_a / 100, q7_n_anos);
+            questionsData.push({
+                id: 7,
+                target: 'Montante (FV em R$)',
+                title: 'Questão 7: Montante com Prazo em Meses e Taxa ao Ano',
+                text: `Uma linha de crédito de <strong>${formatMoeda(q7_pv)}</strong> foi tomada com taxa contratual de <strong>${formatBR(q7_i_a)}% ao ano</strong> (juros compostos). A dívida será quitada em parcela única ao término de <strong>${q7_meses} meses</strong>. Calcule o Montante (FV) total devido.`,
+                given: [
+                    { label: 'Valor Emprestado (PV)', val: formatMoeda(q7_pv) },
+                    { label: 'Taxa Anual Contratual (i)', val: `${formatBR(q7_i_a)}% a.a.` },
+                    { label: 'Prazo de Vencimento', val: `${q7_meses} meses` }
+                ],
+                unit: 'R$',
+                correctVal: q7_ans,
+                formula: 'n = Meses / 12 e FV = PV · (1 + i)ⁿ',
+                memory: `1º) Converter prazo para anos: n = ${q7_meses} / 12 = ${formatBR(q7_n_anos, 2)} anos.<br>2º) Apurar montante: <code>FV = ${formatBR(q7_pv)} · (1 + ${formatBR(q7_i_a/100, 4)})^(${formatBR(q7_n_anos, 2)}) = ${formatMoeda(q7_ans)}</code>`
+            });
+
+            // Q8: Trimestres para Meses
+            const q8_tri = randRange(2, 9, 1);
+            const q8_ans = q8_tri * 3;
+            questionsData.push({
+                id: 8,
+                target: 'n em Meses',
+                title: 'Questão 8: Transformação Inversa (Trimestres para Meses)',
+                text: `Um contrato de prestação de serviços estabelece reajustes nos custos operacionais a cada <strong>${q8_tri} trimestres</strong>. Para lançamento no sistema de gestão financeira que processa eventos em base mensal, quantos meses equivalem a esse período?`,
+                given: [
+                    { label: 'Intervalo de Reajuste', val: `${q8_tri} trimestres` },
+                    { label: 'Relação Base', val: '1 trimestre = 3 meses' }
+                ],
+                unit: 'meses',
+                correctVal: q8_ans,
+                formula: 'n = Trimestres · 3',
+                memory: `Multiplicando pelo número de meses em cada trimestre (3):<br><code>n = ${q8_tri} · 3 = ${q8_ans} meses</code>`
+            });
+
+            // Q9: Ano Exato (365 dias)
+            const q9_dias = randRange(120, 300, 10);
+            const q9_ans = q9_dias / 365;
+            questionsData.push({
+                id: 9,
+                target: 'n em Anos Exatos',
+                title: 'Questão 9: Conversão sob a Convenção de Ano Exato (365 Dias)',
+                text: `Em negociações de títulos soberanos internacionais e contratos de swap cambial, adota-se com frequência o ano civil exato de 365 dias. Calcule a fração de ano correspondente a <strong>${q9_dias} dias exatos</strong>.`,
+                given: [
+                    { label: 'Dias Transcorridos', val: `${q9_dias} dias` },
+                    { label: 'Convenção Exata', val: 'Ano Civil = 365 dias' }
+                ],
+                unit: 'anos',
+                correctVal: q9_ans,
+                formula: 'n = Dias / 365',
+                memory: `Dividindo pela base civil exata de 365 dias:<br><code>n = ${q9_dias} / 365 = ${formatBR(q9_ans, 4)} anos</code>`
+            });
+
+            // Q10: Isolamento de Prazo n com Logaritmo Natural
+            const q10_pv = randRange(5000, 15000, 1000);
+            const q10_i_m = randRange(20, 35, 1) / 10;
+            const q10_n_meses = randRange(6, 18, 2);
+            const q10_fv = q10_pv * Math.pow(1 + q10_i_m / 100, q10_n_meses);
+            const q10_ans = q10_n_meses;
+            questionsData.push({
+                id: 10,
+                target: 'Prazo n (em meses)',
+                title: 'Questão 10: Apuração de Prazo Através de Logaritmo Natural',
+                text: `Um capital de <strong>${formatMoeda(q10_pv)}</strong> foi aplicado sob taxa composta de <strong>${formatBR(q10_i_m)}% ao mês</strong> e acumulou um montante de <strong>${formatMoeda(q10_fv)}</strong>. Quantos meses inteiros foram necessários para atingir esse valor?`,
+                given: [
+                    { label: 'Capital Presente (PV)', val: formatMoeda(q10_pv) },
+                    { label: 'Montante Futuro (FV)', val: formatMoeda(q10_fv) },
+                    { label: 'Taxa Mensal (i)', val: `${formatBR(q10_i_m)}% a.m.` }
+                ],
+                unit: 'meses',
+                correctVal: q10_ans,
+                formula: 'n = ln(FV / PV) / ln(1 + i)',
+                memory: `Isolando o tempo por logaritmo natural:<br><code>n = ln(${formatBR(q10_fv)} / ${formatBR(q10_pv)}) / ln(1 + ${formatBR(q10_i_m/100, 4)}) = ${q10_ans} meses</code>`
+            });
+        }
+
+        // ==========================================================================
+        // 5. RENDERIZAÇÃO DAS QUESTÕES NO DOM
+        // ==========================================================================
+        function renderizarQuestoes() {
+            const container = document.getElementById('questionsContainer');
+            container.innerHTML = '';
+
+            questionsData.forEach(q => {
+                const prefixHTML = (q.unit === 'R$') ? '<span class="currency-prefix">R$</span>' : '';
+                const inputClass = (q.unit === 'R$') ? 'answer-input' : 'answer-input no-prefix';
+                const placeholder = (q.unit === 'R$') ? 'Ex: 15450,80' : 'Ex: 4,50';
+
+                const cardHTML = `
+                    <div class="question-card" id="qcard-${q.id}">
+                        <div class="question-header">
+                            <div>
+                                <span class="question-num">${q.title}</span>
+                            </div>
+                            <span class="target-var-badge">Variável Alvo: ${q.target}</span>
+                        </div>
+
+                        <p class="question-text">${q.text}</p>
+
+                        <div class="question-vars-given">
+                            ${q.given.map(g => `<div class="given-item"><span>${g.label}:</span> <strong>${g.val}</strong></div>`).join('')}
+                        </div>
+
+                        <div class="answer-form-group">
+                            <label style="font-size: 0.9rem; font-weight: 700; color: var(--primary);">Sua Resposta (${q.unit}):</label>
+                            <div class="input-wrapper">
+                                ${prefixHTML}
+                                <input type="text" id="qinput-${q.id}" class="${inputClass} strict-decimal" placeholder="${placeholder}">
+                            </div>
+                            <button class="btn btn-outline" onclick="verificarQuestao(${q.id})">
+                                Validar Resposta
+                            </button>
+                        </div>
+
+                        <div class="feedback-box" id="qfeedback-${q.id}">
+                            <div id="qfeedtitle-${q.id}" style="font-weight: 700; margin-bottom: 0.35rem;"></div>
+                            <div class="calc-memory" id="qfeedmemory-${q.id}"></div>
+                        </div>
+                    </div>
+                `;
+                container.innerHTML += cardHTML;
+            });
+
+            aplicarRegrasDecimaisGlobais();
+        }
+
+        // ==========================================================================
+        // 6. VALIDAÇÃO DAS RESPOSTAS COM TOLERÂNCIA
+        // ==========================================================================
+        function verificarQuestao(id, silenciarAlerta = false) {
+            const q = questionsData.find(item => item.id === id);
+            if (!q) return false;
+
+            const inputEl = document.getElementById(`qinput-${q.id}`);
+            const feedbackEl = document.getElementById(`qfeedback-${q.id}`);
+            const titleEl = document.getElementById(`qfeedtitle-${q.id}`);
+            const memoryEl = document.getElementById(`qfeedmemory-${q.id}`);
+
+            const userVal = parseBR(inputEl.value);
+
+            if (!inputEl.value.trim()) {
+                feedbackEl.className = 'feedback-box incorrect';
+                titleEl.innerHTML = '⚠️ Atenção: Campo não preenchido!';
+                memoryEl.innerHTML = 'Por favor, realize o cálculo e insira sua resposta antes de validar.';
+                return false;
+            }
+
+            const diff = Math.abs(userVal - q.correctVal);
+            const tolerance = Math.max(0.02, Math.abs(q.correctVal) * 0.015);
+            const estaCorreto = diff <= tolerance;
+
+            if (estaCorreto) {
+                feedbackEl.className = 'feedback-box correct';
+                titleEl.innerHTML = '✅ Resposta Correta! Valor dentro da margem de tolerância aceita.';
+                memoryEl.innerHTML = `<strong>Relação / Fórmula Aplicada:</strong> ${q.formula}<br>${q.memory}`;
+                q.userStatus = 'Correto';
+            } else {
+                feedbackEl.className = 'feedback-box incorrect';
+                titleEl.innerHTML = `❌ Resposta Incorreta. (Informado: ${formatBR(userVal, 4)} | Gabarito: ${formatBR(q.correctVal, 4)})`;
+                memoryEl.innerHTML = `<strong>Demonstração do Passo a Passo:</strong><br>${q.memory}`;
+                q.userStatus = 'Incorreto';
+            }
+
+            atualizarPlacar();
+            return estaCorreto;
+        }
+
+        function verificarTodasRespostas() {
+            let acertos = 0;
+            questionsData.forEach(q => {
+                if (verificarQuestao(q.id, true)) acertos++;
+            });
+            atualizarPlacar();
+            alert(`Verificação concluída!\nVocê acertou ${acertos} de ${questionsData.length} questões.`);
+        }
+
+        function atualizarPlacar() {
+            let respondidas = 0;
+            let corretas = 0;
+
+            questionsData.forEach(q => {
+                const inputEl = document.getElementById(`qinput-${q.id}`);
+                if (inputEl && inputEl.value.trim() !== '') respondidas++;
+                if (q.userStatus === 'Correto') corretas++;
+            });
+
+            document.getElementById('progressCount').innerText = `${respondidas} / 10 Respondidas`;
+            document.getElementById('correctCount').innerText = `${corretas}`;
+        }
+
+        // ==========================================================================
+        // 7. EXPORTAÇÃO EM PDF ACADÊMICO
+        // ==========================================================================
+        function exportarRelatorioPDF() {
+            const nomeAluno = document.getElementById('alunoNome').value.trim();
+            if (!nomeAluno) {
+                alert("Por favor, preencha o seu 'Nome Completo' no início da página antes de exportar o relatório.");
+                document.getElementById('alunoNome').focus();
+                window.location.hash = '#identificacao';
+                return;
+            }
+
+            questionsData.forEach(q => {
+                const inputEl = document.getElementById(`qinput-${q.id}`);
+                if (inputEl && inputEl.value.trim() !== '') {
+                    verificarQuestao(q.id, true);
+                } else {
+                    const feedbackEl = document.getElementById(`qfeedback-${q.id}`);
+                    const titleEl = document.getElementById(`qfeedtitle-${q.id}`);
+                    const memoryEl = document.getElementById(`qfeedmemory-${q.id}`);
+                    feedbackEl.className = 'feedback-box';
+                    feedbackEl.style.display = 'block';
+                    titleEl.innerHTML = '⚪ Questão não respondida pelo aluno.';
+                    memoryEl.innerHTML = `<strong>Gabarito e Memória de Cálculo:</strong><br>${q.memory}`;
+                }
+            });
+
+            carregarDataHora();
+            window.print();
+        }
+
+        // ==========================================================================
+        // 8. INICIALIZAÇÃO DE EVENTOS
+        // ==========================================================================
+        document.addEventListener('DOMContentLoaded', () => {
+            carregarDataHora();
+            gerarQuestoesAleatorias();
+            renderizarQuestoes();
+            executarCalculoConversao();
+
+            const mobileBtn = document.getElementById('mobileMenuBtn');
+            const navLinks = document.getElementById('navLinks');
+            mobileBtn.addEventListener('click', () => navLinks.classList.toggle('active'));
+
+            document.querySelectorAll('.nav-link').forEach(link => {
+                link.addEventListener('click', () => {
+                    navLinks.classList.remove('active');
+                });
+            });
+
+            const backToTopBtn = document.getElementById('backToTopBtn');
+            window.addEventListener('scroll', () => {
+                if (window.scrollY > 400) {
+                    backToTopBtn.classList.add('visible');
+                } else {
+                    backToTopBtn.classList.remove('visible');
+                }
+            });
+            backToTopBtn.addEventListener('click', () => window.scrollTo({ top: 0, behavior: 'smooth' }));
+        });
+    </script>
+</body>
+</html>
