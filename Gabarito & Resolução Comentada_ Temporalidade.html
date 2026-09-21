@@ -1,0 +1,1200 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Gabarito & Resolução Comentada: Temporalidade & Juros Compostos | CEST</title>
+    <meta name="description" content="Gabarito e memória analítica de cálculo passo a passo das 10 questões sobre transformação de períodos temporais e juros compostos para o CEST.">
+    <meta name="author" content="Prof. Msc. Philipe Sampaio Lima">
+
+    <!-- Favicon Data URI -->
+    <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><rect width='100' height='100' rx='20' fill='%23002060'/><circle cx='50' cy='50' r='30' stroke='%2310B981' stroke-width='6' fill='none'/><polyline points='35,50 45,62 68,38' stroke='%2310B981' stroke-width='6' stroke-linecap='round' stroke-linejoin='round'/></svg>">
+
+    <style>
+        :root {
+            --primary: #002060;
+            --primary-dark: #001138;
+            --primary-light: #003399;
+            --secondary: #0080FF;
+            --secondary-light: #E6F2FF;
+            --accent: #00A3FF;
+            --accent-light: #F0F8FF;
+            
+            --success: #059669;
+            --success-light: #ECFDF5;
+            --success-border: #A7F3D0;
+            --success-dark: #064E3B;
+
+            --border: #E2E8F0;
+            --border-hover: #CBD5E1;
+            --background: #F4F7FA;
+            --surface: #FFFFFF;
+            --text-primary: #0F172A;
+            --text-secondary: #475569;
+            --text-muted: #64748B;
+
+            --font-main: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+            --font-mono: "SFMono-Regular", Consolas, "Liberation Mono", Menlo, Courier, monospace;
+
+            --radius-xs: 4px;
+            --radius-sm: 8px;
+            --radius-md: 14px;
+            
+            --shadow-sm: 0 2px 5px rgba(0, 32, 96, 0.06);
+            --shadow-md: 0 6px 20px -3px rgba(0, 32, 96, 0.09);
+            --shadow-lg: 0 14px 34px -5px rgba(0, 32, 96, 0.14);
+
+            --transition: 0.25s cubic-bezier(0.4, 0, 0.2, 1);
+            --max-width: 1140px;
+        }
+
+        *, *::before, *::after {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        html {
+            scroll-behavior: smooth;
+            font-size: 16px;
+        }
+
+        body {
+            font-family: var(--font-main);
+            background-color: var(--background);
+            color: var(--text-primary);
+            line-height: 1.6;
+            -webkit-font-smoothing: antialiased;
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+        }
+
+        main {
+            flex: 1 0 auto;
+        }
+
+        a {
+            color: var(--secondary);
+            text-decoration: none;
+            transition: var(--transition);
+        }
+
+        .container {
+            width: 100%;
+            max-width: var(--max-width);
+            margin-left: auto;
+            margin-right: auto;
+            padding-left: 1.5rem;
+            padding-right: 1.5rem;
+        }
+
+        header {
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+            background-color: rgba(255, 255, 255, 0.98);
+            backdrop-filter: blur(12px);
+            border-bottom: 1px solid var(--border);
+            box-shadow: var(--shadow-sm);
+        }
+
+        .nav-container {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            height: 74px;
+        }
+
+        .brand-logo {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            font-weight: 800;
+            color: var(--primary);
+            font-size: 1.2rem;
+            letter-spacing: -0.02em;
+        }
+
+        .brand-logo svg {
+            width: 38px;
+            height: 38px;
+            flex-shrink: 0;
+        }
+
+        .brand-divider {
+            width: 1.5px;
+            height: 24px;
+            background-color: var(--border);
+        }
+
+        .brand-sub {
+            font-size: 0.85rem;
+            color: var(--text-muted);
+            font-weight: 600;
+        }
+
+        .nav-actions {
+            display: flex;
+            gap: 1rem;
+            align-items: center;
+        }
+
+        .btn {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+            padding: 0.75rem 1.5rem;
+            font-size: 0.95rem;
+            font-weight: 600;
+            border-radius: var(--radius-sm);
+            transition: var(--transition);
+            cursor: pointer;
+            border: none;
+            text-decoration: none;
+        }
+
+        .btn-success {
+            background-color: var(--success);
+            color: #FFFFFF;
+            box-shadow: 0 4px 14px rgba(5, 150, 105, 0.32);
+        }
+
+        .btn-success:hover {
+            background-color: #047857;
+            transform: translateY(-2px);
+        }
+
+        #hero {
+            padding: 3.5rem 0 3rem;
+            background: linear-gradient(135deg, var(--primary) 0%, var(--primary-dark) 100%);
+            color: #FFFFFF;
+            position: relative;
+        }
+
+        .hero-badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            background-color: rgba(16, 185, 129, 0.2);
+            border: 1px solid rgba(16, 185, 129, 0.4);
+            padding: 5px 12px;
+            border-radius: 20px;
+            font-size: 0.82rem;
+            font-weight: 700;
+            color: #A7F3D0;
+            margin-bottom: 1rem;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+        }
+
+        .hero-title {
+            font-size: clamp(1.8rem, 3vw, 2.4rem);
+            font-weight: 800;
+            line-height: 1.2;
+            letter-spacing: -0.02em;
+            margin-bottom: 1rem;
+        }
+
+        .hero-description {
+            font-size: 1rem;
+            color: rgba(255, 255, 255, 0.9);
+            margin-bottom: 1.75rem;
+            line-height: 1.7;
+            max-width: 850px;
+        }
+
+        #tabela-conversao {
+            padding: 2.5rem 0;
+        }
+
+        .table-box {
+            background-color: var(--surface);
+            border-radius: var(--radius-md);
+            padding: 1.5rem 2rem;
+            border: 1px solid var(--border);
+            box-shadow: var(--shadow-sm);
+        }
+
+        .table-custom {
+            width: 100%;
+            border-collapse: collapse;
+            font-size: 0.88rem;
+            margin-top: 0.85rem;
+        }
+
+        .table-custom th, .table-custom td {
+            padding: 8px 12px;
+            border: 1px solid var(--border);
+            text-align: left;
+        }
+
+        .table-custom th {
+            background-color: var(--secondary-light);
+            color: var(--primary);
+            font-weight: 700;
+        }
+
+        #exercicios {
+            padding: 2rem 0 4rem;
+        }
+
+        .section-header {
+            margin-bottom: 2rem;
+        }
+
+        .section-tag {
+            display: inline-block;
+            font-size: 0.78rem;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 0.08em;
+            color: var(--secondary);
+            background-color: var(--secondary-light);
+            padding: 3px 12px;
+            border-radius: 20px;
+            margin-bottom: 0.5rem;
+        }
+
+        .section-title {
+            font-size: 1.8rem;
+            font-weight: 800;
+            color: var(--primary);
+        }
+
+        .question-card {
+            background-color: var(--surface);
+            border: 1px solid var(--border);
+            border-radius: var(--radius-md);
+            padding: 1.75rem 2rem;
+            margin-bottom: 2rem;
+            box-shadow: var(--shadow-sm);
+        }
+
+        .question-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 1rem;
+            border-bottom: 1px solid var(--border);
+            padding-bottom: 0.65rem;
+        }
+
+        .question-num {
+            font-size: 1.05rem;
+            font-weight: 800;
+            color: var(--primary);
+        }
+
+        .target-var-badge {
+            font-size: 0.78rem;
+            font-weight: 700;
+            padding: 4px 10px;
+            border-radius: 12px;
+            background-color: var(--secondary-light);
+            color: var(--primary);
+        }
+
+        .question-text {
+            font-size: 1rem;
+            color: var(--text-primary);
+            line-height: 1.7;
+            margin-bottom: 1.25rem;
+        }
+
+        .question-vars-given {
+            background-color: var(--background);
+            border-radius: var(--radius-sm);
+            padding: 0.9rem 1.2rem;
+            margin-bottom: 1.25rem;
+            display: flex;
+            flex-wrap: wrap;
+            gap: 1.5rem;
+            border: 1px dashed var(--border);
+            font-size: 0.9rem;
+        }
+
+        .question-vars-given strong {
+            color: var(--primary);
+        }
+
+        /* BLOCO DE RESOLUÇÃO E GABARITO ANALÍTICO */
+        .solution-box {
+            background-color: #F8FAFC;
+            border: 1.5px solid #CBD5E1;
+            border-radius: var(--radius-sm);
+            padding: 1.25rem 1.5rem;
+            margin-top: 1rem;
+        }
+
+        .solution-header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            margin-bottom: 0.85rem;
+            padding-bottom: 0.6rem;
+            border-bottom: 1px solid #E2E8F0;
+            flex-wrap: wrap;
+            gap: 10px;
+        }
+
+        .solution-badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            background-color: var(--success-light);
+            color: var(--success-dark);
+            border: 1px solid var(--success-border);
+            padding: 4px 10px;
+            border-radius: 6px;
+            font-weight: 700;
+            font-size: 0.82rem;
+        }
+
+        .solution-final-answer {
+            font-size: 1.05rem;
+            font-weight: 800;
+            color: var(--primary);
+        }
+
+        .solution-steps {
+            display: flex;
+            flex-direction: column;
+            gap: 0.75rem;
+        }
+
+        .step-item {
+            background: #FFFFFF;
+            border: 1px solid #E2E8F0;
+            border-radius: var(--radius-xs);
+            padding: 0.85rem 1.1rem;
+        }
+
+        .step-title {
+            font-size: 0.85rem;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 0.04em;
+            color: var(--secondary);
+            margin-bottom: 0.35rem;
+        }
+
+        .step-content {
+            font-size: 0.94rem;
+            color: var(--text-secondary);
+            line-height: 1.6;
+        }
+
+        .step-content code {
+            font-family: var(--font-mono);
+            background: #F1F5F9;
+            padding: 2px 6px;
+            border-radius: 4px;
+            color: var(--primary);
+            font-size: 0.9rem;
+            font-weight: 600;
+        }
+
+        .step-formula-box {
+            background-color: #F8FAFC;
+            border-left: 3px solid var(--primary);
+            padding: 8px 12px;
+            margin: 6px 0;
+            font-family: var(--font-mono);
+            font-size: 0.92rem;
+            color: var(--primary-dark);
+            font-weight: 600;
+        }
+
+        .tip-box {
+            margin-top: 0.6rem;
+            background-color: #FEF3C7;
+            border-left: 3px solid #D97706;
+            padding: 7px 12px;
+            font-size: 0.85rem;
+            color: #92400E;
+            border-radius: 0 var(--radius-xs) var(--radius-xs) 0;
+        }
+
+        #exportar {
+            background-color: var(--surface);
+            border-top: 1px solid var(--border);
+            padding: 3rem 0;
+            text-align: center;
+        }
+
+        .export-card {
+            background: var(--background);
+            border: 2px dashed var(--success);
+            border-radius: var(--radius-md);
+            padding: 2.5rem 1.5rem;
+            max-width: 720px;
+            margin: 0 auto;
+        }
+
+        footer {
+            background-color: var(--primary-dark);
+            color: #FFFFFF;
+            padding: 2.5rem 0;
+            font-size: 0.85rem;
+            text-align: center;
+        }
+
+        .print-header {
+            display: none;
+        }
+
+        @media print {
+            @page {
+                size: A4 portrait;
+                margin: 10mm 10mm;
+            }
+
+            header, #hero, #exportar, footer, .btn {
+                display: none !important;
+            }
+
+            body {
+                background: #FFFFFF !important;
+                color: #000000 !important;
+                font-size: 9pt;
+                line-height: 1.35;
+            }
+
+            .container {
+                max-width: 100% !important;
+                padding: 0 !important;
+            }
+
+            .print-header {
+                display: block !important;
+                border-bottom: 2px solid var(--primary);
+                padding-bottom: 6px;
+                margin-bottom: 10px;
+            }
+
+            .print-header-top {
+                display: flex;
+                justify-content: space-between;
+                align-items: center;
+            }
+
+            .print-title {
+                font-size: 11pt;
+                font-weight: bold;
+                color: var(--primary) !important;
+            }
+
+            #tabela-conversao {
+                padding: 0 0 8px 0 !important;
+            }
+
+            .table-box {
+                padding: 6px !important;
+                border: 1px solid #CBD5E1 !important;
+            }
+
+            .table-custom th, .table-custom td {
+                padding: 3px 6px !important;
+                font-size: 7.5pt !important;
+            }
+
+            #exercicios {
+                padding: 0 !important;
+            }
+
+            .section-header {
+                margin-bottom: 6px !important;
+            }
+
+            .section-title {
+                font-size: 10.5pt !important;
+            }
+
+            .question-card {
+                box-shadow: none !important;
+                border: 1px solid #94A3B8 !important;
+                padding: 8px 10px !important;
+                margin-bottom: 8px !important;
+                page-break-inside: avoid !important;
+            }
+
+            .question-header {
+                margin-bottom: 4px !important;
+                padding-bottom: 3px !important;
+            }
+
+            .question-num {
+                font-size: 9pt !important;
+            }
+
+            .question-text {
+                font-size: 8.5pt !important;
+                margin-bottom: 4px !important;
+            }
+
+            .question-vars-given {
+                padding: 4px 6px !important;
+                margin-bottom: 4px !important;
+                font-size: 7.8pt !important;
+                gap: 8px !important;
+            }
+
+            .solution-box {
+                padding: 6px 8px !important;
+                margin-top: 4px !important;
+                background-color: #F8FAFC !important;
+                border: 1px solid #94A3B8 !important;
+            }
+
+            .step-item {
+                padding: 5px 8px !important;
+                border: 1px solid #CBD5E1 !important;
+            }
+
+            .step-content code, .step-formula-box {
+                background: #F1F5F9 !important;
+                color: #000000 !important;
+            }
+
+            .tip-box {
+                display: none !important;
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <!-- CABEÇALHO EXCLUSIVO PARA IMPRESSÃO / FOLHA DOCENTE -->
+    <div class="print-header container">
+        <div class="print-header-top">
+            <div>
+                <h1 class="print-title">CEST • CENTRO UNIVERSITÁRIO SANTA TEREZINHA</h1>
+                <p style="font-size: 8.5pt; font-weight: 600; color: #334155;">Curso de Administração • Matemática Financeira</p>
+                <p style="font-size: 8pt; color: #475569;">Docente: Prof. Msc. Philipe Sampaio Lima</p>
+            </div>
+            <div style="text-align: right;">
+                <span style="font-size: 9.5pt; font-weight: bold; color: #002060;">GABARITO OFICIAL & MEMÓRIA DE CÁLCULO</span><br>
+                <span style="font-size: 7.5pt; color: #059669; font-weight: 700;">10 Questões • Temporalidade (n) & Juros Compostos</span>
+            </div>
+        </div>
+    </div>
+
+    <!-- CABEÇALHO DA INTERFACE DIGITAL -->
+    <header>
+        <div class="container nav-container">
+            <a href="#" class="brand-logo" aria-label="CEST Matemática Financeira">
+                <svg viewBox="0 0 100 100" fill="none" xmlns="http://www.w3.org/2000/svg">
+                    <rect width="100" height="100" rx="18" fill="#002060"/>
+                    <circle cx="50" cy="50" r="30" stroke="#FFFFFF" stroke-width="8"/>
+                    <polyline points="35,50 45,62 68,38" stroke="#10B981" stroke-width="8" stroke-linecap="round" stroke-linejoin="round"/>
+                </svg>
+                <span>CEST</span>
+                <span class="brand-divider"></span>
+                <span class="brand-sub">Gabarito Oficial: Temporalidade & Juros</span>
+            </a>
+
+            <div class="nav-actions">
+                <button class="btn btn-success" onclick="window.print()">
+                    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 9V2h12v7M6 18H4a2 2 0 0 1-2-2v-5a2 2 0 0 1 2-2h16a2 2 0 0 1 2 2v5a2 2 0 0 1-2 2h-2"/><path d="M6 14h12v8H6z"/></svg>
+                    Imprimir Gabarito em PDF
+                </button>
+            </div>
+        </div>
+    </header>
+
+    <main>
+        <!-- HERO SECTION -->
+        <section id="hero">
+            <div class="container">
+                <div class="hero-badge">
+                    Guia Docente • Resolução Passo a Passo para o Quadro
+                </div>
+                <h1 class="hero-title">Gabarito Analítico: Temporalidade & Juros Compostos</h1>
+                <p class="hero-description">
+                    Demonstração analítica e homogênea das 10 questões exatas da atividade discente. Cada resolução contém a etapa de conversão de tempo para a unidade da taxa de juros (n) e o desenvolvimento aritmético do montante composto FV = PV · (1 + i)ⁿ.
+                </p>
+                <button class="btn btn-success" onclick="window.print()">
+                    Imprimir / Exportar Gabarito Oficial (PDF)
+                </button>
+            </div>
+        </section>
+
+        <!-- TABELA AUXILIAR DE CONVERSÃO -->
+        <section id="tabela-conversao">
+            <div class="container">
+                <div class="table-box">
+                    <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 0.5rem;">
+                        <h2 style="font-size: 1.1rem; color: var(--primary); font-weight: 700;">Quadro de Equivalência Cronológica Ordinária (Comercial)</h2>
+                        <span style="font-size: 0.8rem; color: var(--text-muted);">Base canônica: 1 ano = 12 meses = 360 dias</span>
+                    </div>
+                    <table class="table-custom">
+                        <thead>
+                            <tr>
+                                <th>Grandeza</th>
+                                <th>Em Dias</th>
+                                <th>Em Meses</th>
+                                <th>Em Bimestres</th>
+                                <th>Em Trimestres</th>
+                                <th>Em Semestres</th>
+                                <th>Em Anos</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td><strong>1 Mês</strong></td>
+                                <td>30 dias</td>
+                                <td>1 mês</td>
+                                <td>1/2 = 0,5 bim</td>
+                                <td>1/3 ≈ 0,333 trim</td>
+                                <td>1/6 ≈ 0,167 sem</td>
+                                <td>1/12 ≈ 0,0833 ano</td>
+                            </tr>
+                            <tr>
+                                <td><strong>1 Bimestre</strong></td>
+                                <td>60 dias</td>
+                                <td>2 meses</td>
+                                <td>1 bim</td>
+                                <td>2/3 ≈ 0,667 trim</td>
+                                <td>2/6 = 0,333 sem</td>
+                                <td>2/12 = 1/6 ano</td>
+                            </tr>
+                            <tr>
+                                <td><strong>1 Trimestre</strong></td>
+                                <td>90 dias</td>
+                                <td>3 meses</td>
+                                <td>1,5 bim</td>
+                                <td>1 trim</td>
+                                <td>3/6 = 0,5 sem</td>
+                                <td>3/12 = 0,25 ano</td>
+                            </tr>
+                            <tr>
+                                <td><strong>1 Semestre</strong></td>
+                                <td>180 dias</td>
+                                <td>6 meses</td>
+                                <td>3 bim</td>
+                                <td>2 trim</td>
+                                <td>1 sem</td>
+                                <td>6/12 = 0,5 ano</td>
+                            </tr>
+                            <tr>
+                                <td><strong>1 Ano Comercial</strong></td>
+                                <td>360 dias</td>
+                                <td>12 meses</td>
+                                <td>6 bim</td>
+                                <td>4 trim</td>
+                                <td>2 sem</td>
+                                <td>1,00 ano</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </section>
+
+        <!-- 10 QUESTÕES EXATAS RESOLVIDAS PASSO A PASSO -->
+        <section id="exercicios">
+            <div class="container">
+                <div class="section-header">
+                    <span class="section-tag">Memória Analítica Docente</span>
+                    <h2 class="section-title">Resoluções Estruturadas para Explicação em Sala</h2>
+                </div>
+
+                <!-- QUESTÃO 1 -->
+                <div class="question-card">
+                    <div class="question-header">
+                        <span class="question-num">Questão 01 • Conversão de Dias para Meses Comerciais</span>
+                        <span class="target-var-badge">Montante Composto (FV)</span>
+                    </div>
+                    <p class="question-text">
+                        Um capital de <strong>R$ 15.000,00</strong> foi aplicado sob o regime de juros compostos com rentabilidade de <strong>2,5% ao mês</strong> durante <strong>75 dias</strong> comerciais. Converta o prazo de dias para meses e determine o Montante Final (FV) acumulado no período.
+                    </p>
+                    <div class="question-vars-given">
+                        <div>Capital (PV): <strong>R$ 15.000,00</strong></div>
+                        <div>Taxa (i): <strong>2,5% ao mês (0,025)</strong></div>
+                        <div>Prazo original: <strong>75 dias</strong> (1 mês = 30 dias)</div>
+                    </div>
+                    <div class="solution-box">
+                        <div class="solution-header">
+                            <span class="solution-badge">✓ GABARITO OFICIAL</span>
+                            <span class="solution-final-answer">n = 2,5 meses &nbsp;|&nbsp; FV = R$ 15.955,87</span>
+                        </div>
+                        <div class="solution-steps">
+                            <div class="step-item">
+                                <div class="step-title">Etapa 1: Homogeneização do Período (Dias para Meses)</div>
+                                <div class="step-content">
+                                    A taxa é mensal (<strong>i = 2,5% a.m. = 0,025</strong>). Pela convenção comercial (1 mês = 30 dias):
+                                    <div class="step-formula-box">n = 75 / 30 = 2,5 meses comerciais</div>
+                                </div>
+                            </div>
+                            <div class="step-item">
+                                <div class="step-title">Etapa 2: Cálculo do Montante Composto (FV)</div>
+                                <div class="step-content">
+                                    Aplicando a fórmula <code>FV = PV · (1 + i)ⁿ</code>:
+                                    <div class="step-formula-box">
+                                        FV = 15.000,00 · (1 + 0,025)²,⁵<br>
+                                        FV = 15.000,00 · (1,025)²,⁵<br>
+                                        FV = 15.000,00 · 1,06372489 = R$ 15.955,87
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="tip-box">
+                                <strong>Dica de Quadro:</strong> Enfatize que 2,5 meses equivale a 2 meses e 15 dias, operando de forma exponencial no regime composto.
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- QUESTÃO 2 -->
+                <div class="question-card">
+                    <div class="question-header">
+                        <span class="question-num">Questão 02 • Conversão de Meses para Trimestres</span>
+                        <span class="target-var-badge">Montante Composto (FV)</span>
+                    </div>
+                    <p class="question-text">
+                        Um financiamento de <strong>R$ 40.000,00</strong> foi contratado à taxa de juros compostos de <strong>4,5% ao trimestre</strong> pelo prazo total de <strong>18 meses</strong>. Converta os meses para trimestres e calcule o valor total a ser pago (FV) na quitação da dívida.
+                    </p>
+                    <div class="question-vars-given">
+                        <div>Principal (PV): <strong>R$ 40.000,00</strong></div>
+                        <div>Taxa (i): <strong>4,5% ao trimestre (0,045)</strong></div>
+                        <div>Prazo original: <strong>18 meses</strong> (1 trimestre = 3 meses)</div>
+                    </div>
+                    <div class="solution-box">
+                        <div class="solution-header">
+                            <span class="solution-badge">✓ GABARITO OFICIAL</span>
+                            <span class="solution-final-answer">n = 6 trimestres &nbsp;|&nbsp; FV = R$ 52.090,44</span>
+                        </div>
+                        <div class="solution-steps">
+                            <div class="step-item">
+                                <div class="step-title">Etapa 1: Homogeneização do Período (Meses para Trimestres)</div>
+                                <div class="step-content">
+                                    A taxa é trimestral (<strong>i = 4,5% a.t. = 0,045</strong>). Sabendo que 1 trimestre = 3 meses:
+                                    <div class="step-formula-box">n = 18 / 3 = 6 trimestres</div>
+                                </div>
+                            </div>
+                            <div class="step-item">
+                                <div class="step-title">Etapa 2: Cálculo do Montante Composto (FV)</div>
+                                <div class="step-content">
+                                    Aplicando a fórmula <code>FV = PV · (1 + i)ⁿ</code>:
+                                    <div class="step-formula-box">
+                                        FV = 40.000,00 · (1 + 0,045)⁶<br>
+                                        FV = 40.000,00 · (1,045)⁶<br>
+                                        FV = 40.000,00 · 1,30226012 = R$ 52.090,44
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="tip-box">
+                                <strong>Dica de Quadro:</strong> Mostre que 18 meses são exatamente 1 ano e meio, correspondendo a 6 trimestres redondos no expoente.
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- QUESTÃO 3 -->
+                <div class="question-card">
+                    <div class="question-header">
+                        <span class="question-num">Questão 03 • Conversão de Semestres para Anos</span>
+                        <span class="target-var-badge">Montante Composto (FV)</span>
+                    </div>
+                    <p class="question-text">
+                        Uma aplicação financeira de <strong>R$ 50.000,00</strong> remunera o investidor à taxa de juros compostos de <strong>14% ao ano</strong>. Sabendo que os recursos permanecerão aplicados durante <strong>5 semestres</strong>, converta o prazo para anos e determine o Montante Final (FV).
+                    </p>
+                    <div class="question-vars-given">
+                        <div>Capital (PV): <strong>R$ 50.000,00</strong></div>
+                        <div>Taxa (i): <strong>14% ao ano (0,14)</strong></div>
+                        <div>Prazo original: <strong>5 semestres</strong> (1 ano = 2 semestres)</div>
+                    </div>
+                    <div class="solution-box">
+                        <div class="solution-header">
+                            <span class="solution-badge">✓ GABARITO OFICIAL</span>
+                            <span class="solution-final-answer">n = 2,5 anos &nbsp;|&nbsp; FV = R$ 69.349,67</span>
+                        </div>
+                        <div class="solution-steps">
+                            <div class="step-item">
+                                <div class="step-title">Etapa 1: Homogeneização do Período (Semestres para Anos)</div>
+                                <div class="step-content">
+                                    A taxa é anual (<strong>i = 14% a.a. = 0,14</strong>). Como 1 ano compreende 2 semestres:
+                                    <div class="step-formula-box">n = 5 / 2 = 2,5 anos</div>
+                                </div>
+                            </div>
+                            <div class="step-item">
+                                <div class="step-title">Etapa 2: Cálculo do Montante Composto (FV)</div>
+                                <div class="step-content">
+                                    Aplicando a fórmula <code>FV = PV · (1 + i)ⁿ</code>:
+                                    <div class="step-formula-box">
+                                        FV = 50.000,00 · (1 + 0,14)²,⁵<br>
+                                        FV = 50.000,00 · (1,14)²,⁵<br>
+                                        FV = 50.000,00 · 1,38699348 = R$ 69.349,67
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="tip-box">
+                                <strong>Dica de Quadro:</strong> Demonstre que <code>(1,14)²,⁵ = (1,14)² · √(1,14) = 1,2996 · 1,0677078 = 1,386993</code>.
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- QUESTÃO 4 -->
+                <div class="question-card">
+                    <div class="question-header">
+                        <span class="question-num">Questão 04 • Dias Comerciais para Fração de Ano Comercial</span>
+                        <span class="target-var-badge">Montante Composto (FV)</span>
+                    </div>
+                    <p class="question-text">
+                        Um título de crédito com valor de <strong>R$ 30.000,00</strong> foi aplicado à taxa de <strong>16% ao ano</strong> (juros compostos) durante <strong>144 dias</strong> comerciais. Adotando a convenção do ano comercial de 360 dias, expresse o prazo em anos e apure o Montante Final (FV).
+                    </p>
+                    <div class="question-vars-given">
+                        <div>Capital (PV): <strong>R$ 30.000,00</strong></div>
+                        <div>Taxa (i): <strong>16% ao ano (0,16)</strong></div>
+                        <div>Prazo original: <strong>144 dias</strong> (1 ano comercial = 360 dias)</div>
+                    </div>
+                    <div class="solution-box">
+                        <div class="solution-header">
+                            <span class="solution-badge">✓ GABARITO OFICIAL</span>
+                            <span class="solution-final-answer">n = 0,4 ano &nbsp;|&nbsp; FV = R$ 31.815,44</span>
+                        </div>
+                        <div class="solution-steps">
+                            <div class="step-item">
+                                <div class="step-title">Etapa 1: Homogeneização do Período (Dias para Ano Comercial)</div>
+                                <div class="step-content">
+                                    A taxa é dada ao ano (<strong>i = 16% a.a. = 0,16</strong>). Pela convenção do ano comercial de 360 dias:
+                                    <div class="step-formula-box">n = 144 / 360 = 0,4 ano (fração exata 2/5)</div>
+                                </div>
+                            </div>
+                            <div class="step-item">
+                                <div class="step-title">Etapa 2: Cálculo do Montante Composto (FV)</div>
+                                <div class="step-content">
+                                    Aplicando a fórmula <code>FV = PV · (1 + i)ⁿ</code>:
+                                    <div class="step-formula-box">
+                                        FV = 30.000,00 · (1 + 0,16)⁰˒⁴<br>
+                                        FV = 30.000,00 · (1,16)⁰˒⁴<br>
+                                        FV = 30.000,00 · 1,06051478 = R$ 31.815,44
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="tip-box">
+                                <strong>Dica de Quadro:</strong> Destaque a facilidade da simplificação algébrica: 144/360 dividindo por 72 resulta diretamente em 2/5 = 0,4.
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- QUESTÃO 5 -->
+                <div class="question-card">
+                    <div class="question-header">
+                        <span class="question-num">Questão 05 • Conversão de Meses para Bimestres</span>
+                        <span class="target-var-badge">Montante Composto (FV)</span>
+                    </div>
+                    <p class="question-text">
+                        Uma tesouraria aplicou um excedente de caixa no valor de <strong>R$ 22.000,00</strong> à taxa bimestral composta de <strong>3,2% ao bimestre</strong> pelo prazo total de <strong>14 meses</strong>. Converta os meses para bimestres e calcule o valor do Montante (FV) no vencimento.
+                    </p>
+                    <div class="question-vars-given">
+                        <div>Capital (PV): <strong>R$ 22.000,00</strong></div>
+                        <div>Taxa (i): <strong>3,2% ao bimestre (0,032)</strong></div>
+                        <div>Prazo original: <strong>14 meses</strong> (1 bimestre = 2 meses)</div>
+                    </div>
+                    <div class="solution-box">
+                        <div class="solution-header">
+                            <span class="solution-badge">✓ GABARITO OFICIAL</span>
+                            <span class="solution-final-answer">n = 7 bimestres &nbsp;|&nbsp; FV = R$ 27.424,31</span>
+                        </div>
+                        <div class="solution-steps">
+                            <div class="step-item">
+                                <div class="step-title">Etapa 1: Homogeneização do Período (Meses para Bimestres)</div>
+                                <div class="step-content">
+                                    A taxa é bimestral (<strong>i = 3,2% a.b. = 0,032</strong>). Sabendo que 1 bimestre = 2 meses:
+                                    <div class="step-formula-box">n = 14 / 2 = 7 bimestres</div>
+                                </div>
+                            </div>
+                            <div class="step-item">
+                                <div class="step-title">Etapa 2: Cálculo do Montante Composto (FV)</div>
+                                <div class="step-content">
+                                    Aplicando a fórmula <code>FV = PV · (1 + i)ⁿ</code>:
+                                    <div class="step-formula-box">
+                                        FV = 22.000,00 · (1 + 0,032)⁷<br>
+                                        FV = 22.000,00 · (1,032)⁷<br>
+                                        FV = 22.000,00 · 1,24655972 = R$ 27.424,31
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="tip-box">
+                                <strong>Dica de Quadro:</strong> Enfatize a conversão simples de unidade menor para maior mediante divisão pelo agrupamento natural (2 meses por bimestre).
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- QUESTÃO 6 -->
+                <div class="question-card">
+                    <div class="question-header">
+                        <span class="question-num">Questão 06 • Conversão de Dias Comerciais para Meses</span>
+                        <span class="target-var-badge">Montante Composto (FV)</span>
+                    </div>
+                    <p class="question-text">
+                        Uma empresa obteve rendimento sobre um aporte inicial de <strong>R$ 18.000,00</strong> remunerado a <strong>2,2% ao mês</strong> (juros compostos) durante <strong>105 dias</strong> comerciais. Converta os dias em meses comerciais e calcule o Montante Bruto (FV) gerado.
+                    </p>
+                    <div class="question-vars-given">
+                        <div>Capital (PV): <strong>R$ 18.000,00</strong></div>
+                        <div>Taxa (i): <strong>2,2% ao mês (0,022)</strong></div>
+                        <div>Prazo original: <strong>105 dias</strong> (1 mês comercial = 30 dias)</div>
+                    </div>
+                    <div class="solution-box">
+                        <div class="solution-header">
+                            <span class="solution-badge">✓ GABARITO OFICIAL</span>
+                            <span class="solution-final-answer">n = 3,5 meses &nbsp;|&nbsp; FV = R$ 19.427,33</span>
+                        </div>
+                        <div class="solution-steps">
+                            <div class="step-item">
+                                <div class="step-title">Etapa 1: Homogeneização do Período (Dias para Meses)</div>
+                                <div class="step-content">
+                                    A taxa é mensal (<strong>i = 2,2% a.m. = 0,022</strong>). Pela convenção comercial (1 mês = 30 dias):
+                                    <div class="step-formula-box">n = 105 / 30 = 3,5 meses (ou 3 meses e 15 dias)</div>
+                                </div>
+                            </div>
+                            <div class="step-item">
+                                <div class="step-title">Etapa 2: Cálculo do Montante Composto (FV)</div>
+                                <div class="step-content">
+                                    Aplicando a fórmula <code>FV = PV · (1 + i)ⁿ</code>:
+                                    <div class="step-formula-box">
+                                        FV = 18.000,00 · (1 + 0,022)³,⁵<br>
+                                        FV = 18.000,00 · (1,022)³,⁵<br>
+                                        FV = 18.000,00 · 1,07929606 = R$ 19.427,33
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="tip-box">
+                                <strong>Dica de Quadro:</strong> Mostre que o cálculo contínuo do expoente fracionário garante a equivalência perfeita dos juros no regime composto.
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- QUESTÃO 7 -->
+                <div class="question-card">
+                    <div class="question-header">
+                        <span class="question-num">Questão 07 • Conversão de Meses para Anos Comerciais</span>
+                        <span class="target-var-badge">Montante Composto (FV)</span>
+                    </div>
+                    <p class="question-text">
+                        Um financiamento bancário para aquisição de equipamentos de <strong>R$ 35.000,00</strong> foi contratado com taxa de <strong>15% ao ano</strong> (juros compostos) para pagamento em parcela única após <strong>30 meses</strong>. Converta o período para anos e apure o Montante (FV) devido.
+                    </p>
+                    <div class="question-vars-given">
+                        <div>Principal (PV): <strong>R$ 35.000,00</strong></div>
+                        <div>Taxa (i): <strong>15% ao ano (0,15)</strong></div>
+                        <div>Prazo original: <strong>30 meses</strong> (1 ano = 12 meses)</div>
+                    </div>
+                    <div class="solution-box">
+                        <div class="solution-header">
+                            <span class="solution-badge">✓ GABARITO OFICIAL</span>
+                            <span class="solution-final-answer">n = 2,5 anos &nbsp;|&nbsp; FV = R$ 49.622,46</span>
+                        </div>
+                        <div class="solution-steps">
+                            <div class="step-item">
+                                <div class="step-title">Etapa 1: Homogeneização do Período (Meses para Anos)</div>
+                                <div class="step-content">
+                                    A taxa contratual é anual (<strong>i = 15% a.a. = 0,15</strong>). Como 1 ano = 12 meses:
+                                    <div class="step-formula-box">n = 30 / 12 = 2,5 anos (ou 2 anos e 6 meses)</div>
+                                </div>
+                            </div>
+                            <div class="step-item">
+                                <div class="step-title">Etapa 2: Cálculo do Montante Composto (FV)</div>
+                                <div class="step-content">
+                                    Aplicando a fórmula <code>FV = PV · (1 + i)ⁿ</code>:
+                                    <div class="step-formula-box">
+                                        FV = 35.000,00 · (1 + 0,15)²,⁵<br>
+                                        FV = 35.000,00 · (1,15)²,⁵<br>
+                                        FV = 35.000,00 · 1,41778465 = R$ 49.622,46
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="tip-box">
+                                <strong>Dica de Quadro:</strong> Explique que <code>(1,15)²,⁵ = 1,15² · √1,15 = 1,3225 · 1,07238 = 1,41778</code>.
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- QUESTÃO 8 -->
+                <div class="question-card">
+                    <div class="question-header">
+                        <span class="question-num">Questão 08 • Conversão de Bimestres para Semestres</span>
+                        <span class="target-var-badge">Montante Composto (FV)</span>
+                    </div>
+                    <p class="question-text">
+                        Um investidor institucional aplicou <strong>R$ 60.000,00</strong> à taxa de juros compostos de <strong>6% ao semestre</strong>. O resgate foi agendado para <strong>9 bimestres</strong> após o aporte. Converta os bimestres para semestres e determine o Montante Final (FV) recebido.
+                    </p>
+                    <div class="question-vars-given">
+                        <div>Capital (PV): <strong>R$ 60.000,00</strong></div>
+                        <div>Taxa (i): <strong>6% ao semestre (0,06)</strong></div>
+                        <div>Prazo original: <strong>9 bimestres</strong> (1 semestre = 3 bimestres)</div>
+                    </div>
+                    <div class="solution-box">
+                        <div class="solution-header">
+                            <span class="solution-badge">✓ GABARITO OFICIAL</span>
+                            <span class="solution-final-answer">n = 3 semestres &nbsp;|&nbsp; FV = R$ 71.460,96</span>
+                        </div>
+                        <div class="solution-steps">
+                            <div class="step-item">
+                                <div class="step-title">Etapa 1: Homogeneização do Período (Bimestres para Semestres)</div>
+                                <div class="step-content">
+                                    A taxa é semestral (<strong>i = 6% a.s. = 0,06</strong>). Sabendo que 1 semestre possui 6 meses e 1 bimestre possui 2 meses, temos <code>6 / 2 = 3 bimestres por semestre</code>:
+                                    <div class="step-formula-box">n = 9 / 3 = 3 semestres</div>
+                                </div>
+                            </div>
+                            <div class="step-item">
+                                <div class="step-title">Etapa 2: Cálculo do Montante Composto (FV)</div>
+                                <div class="step-content">
+                                    Aplicando a fórmula <code>FV = PV · (1 + i)ⁿ</code>:
+                                    <div class="step-formula-box">
+                                        FV = 60.000,00 · (1 + 0,06)³<br>
+                                        FV = 60.000,00 · (1,06)³<br>
+                                        FV = 60.000,00 · 1,191016 = R$ 71.460,96
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="tip-box">
+                                <strong>Dica de Quadro:</strong> Mostre a conversão intermediária alternativa para os alunos: 9 bimestres × 2 meses = 18 meses; 18 meses / 6 meses = 3 semestres.
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- QUESTÃO 9 -->
+                <div class="question-card">
+                    <div class="question-header">
+                        <span class="question-num">Questão 09 • Conversão de Dias Comerciais para Anos</span>
+                        <span class="target-var-badge">Montante Composto (FV)</span>
+                    </div>
+                    <p class="question-text">
+                        Um título prefixado de <strong>R$ 25.000,00</strong> remunera o aplicador à taxa de <strong>12% ao ano</strong> (juros compostos). A aplicação foi resgatada ao final de <strong>540 dias</strong> comerciais. Converta o prazo para anos comerciais e apure o valor bruto de resgate (FV).
+                    </p>
+                    <div class="question-vars-given">
+                        <div>Capital (PV): <strong>R$ 25.000,00</strong></div>
+                        <div>Taxa (i): <strong>12% ao ano (0,12)</strong></div>
+                        <div>Prazo original: <strong>540 dias</strong> (1 ano comercial = 360 dias)</div>
+                    </div>
+                    <div class="solution-box">
+                        <div class="solution-header">
+                            <span class="solution-badge">✓ GABARITO OFICIAL</span>
+                            <span class="solution-final-answer">n = 1,5 ano &nbsp;|&nbsp; FV = R$ 29.658,05</span>
+                        </div>
+                        <div class="solution-steps">
+                            <div class="step-item">
+                                <div class="step-title">Etapa 1: Homogeneização do Período (Dias para Ano Comercial)</div>
+                                <div class="step-content">
+                                    A taxa é dada ao ano (<strong>i = 12% a.a. = 0,12</strong>). Pela convenção do ano comercial (360 dias):
+                                    <div class="step-formula-box">n = 540 / 360 = 1,5 ano (ou 1 ano e meio)</div>
+                                </div>
+                            </div>
+                            <div class="step-item">
+                                <div class="step-title">Etapa 2: Cálculo do Montante Composto (FV)</div>
+                                <div class="step-content">
+                                    Aplicando a fórmula <code>FV = PV · (1 + i)ⁿ</code>:
+                                    <div class="step-formula-box">
+                                        FV = 25.000,00 · (1 + 0,12)¹,⁵<br>
+                                        FV = 25.000,00 · (1,12)¹,⁵<br>
+                                        FV = 25.000,00 · 1,18632205 = R$ 29.658,05
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="tip-box">
+                                <strong>Dica de Quadro:</strong> Enfatize o uso dos 360 dias no denominador conforme as práticas bancárias do mercado brasileiro.
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- QUESTÃO 10 -->
+                <div class="question-card">
+                    <div class="question-header">
+                        <span class="question-num">Questão 10 • Apuração de Prazo e Desdobramento Temporal</span>
+                        <span class="target-var-badge">Determinação de n por Logaritmo</span>
+                    </div>
+                    <p class="question-text">
+                        Um investidor aplicou o capital inicial de <strong>R$ 20.000,00</strong> à taxa composta de <strong>3% ao mês</strong> e alcançou um montante de <strong>R$ 23.881,05</strong>. Calcule quantos meses inteiros a aplicação permaneceu rendendo e indique a quantos <strong>bimestres</strong> e a quantos <strong>dias comerciais</strong> esse prazo corresponde.
+                    </p>
+                    <div class="question-vars-given">
+                        <div>Capital (PV): <strong>R$ 20.000,00</strong></div>
+                        <div>Montante (FV): <strong>R$ 23.881,05</strong></div>
+                        <div>Taxa (i): <strong>3% ao mês (0,03)</strong></div>
+                        <div>Fórmula de isolamento: <strong>n = ln(FV / PV) / ln(1 + i)</strong></div>
+                    </div>
+                    <div class="solution-box">
+                        <div class="solution-header">
+                            <span class="solution-badge">✓ GABARITO OFICIAL</span>
+                            <span class="solution-final-answer">n = 6 meses &nbsp;|&nbsp; 3 bimestres &nbsp;|&nbsp; 180 dias comerciais</span>
+                        </div>
+                        <div class="solution-steps">
+                            <div class="step-item">
+                                <div class="step-title">Etapa 1: Apuração do Prazo em Meses via Logaritmo Natural</div>
+                                <div class="step-content">
+                                    Partindo de <code>FV = PV · (1 + i)ⁿ</code>, isolamos <code>n</code> aplicando o logaritmo natural (ln):
+                                    <div class="step-formula-box">
+                                        (1 + i)ⁿ = FV / PV<br>
+                                        ln[(1 + i)ⁿ] = ln(FV / PV)<br>
+                                        n · ln(1 + i) = ln(FV / PV) &nbsp;⇒&nbsp; n = ln(FV / PV) / ln(1 + i)
+                                    </div>
+                                    Substituindo os valores:
+                                    <div class="step-formula-box">
+                                        FV / PV = 23.881,05 / 20.000,00 = 1,1940525<br>
+                                        1 + i = 1 + 0,03 = 1,03<br>
+                                        ln(1,1940525) ≈ 0,177353<br>
+                                        ln(1,03) ≈ 0,029559<br>
+                                        n = 0,177353 / 0,029559 = 6 meses exatos
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="step-item">
+                                <div class="step-title">Etapa 2: Desdobramento Temporal para Bimestres e Dias</div>
+                                <div class="step-content">
+                                    Com <code>n = 6 meses</code> apurado:
+                                    <div class="step-formula-box">
+                                        • Em Bimestres: n_bimestres = 6 / 2 = 3 bimestres<br>
+                                        • Em Dias Comerciais: n_dias = 6 · 30 = 180 dias comerciais
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="tip-box">
+                                <strong>Dica de Quadro:</strong> Demonstre no quadro que <code>(1,03)⁶ = 1,1940523</code>, confirmando a igualdade <code>20.000,00 · 1,1940523 = 23.881,05</code>.
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+        </section>
+
+        <!-- SEÇÃO DE EXPORTAÇÃO PDF -->
+        <section id="exportar">
+            <div class="container">
+                <div class="export-card">
+                    <svg style="width: 54px; height: 54px; color: var(--success); margin-bottom: 0.75rem;" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8">
+                        <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/>
+                        <polyline points="14 2 14 8 20 8"/>
+                        <polyline points="9 15 12 18 15 15"/>
+                        <line x1="12" y1="18" x2="12" y2="10"/>
+                    </svg>
+                    <h2 style="font-size: 1.4rem; color: var(--primary); font-weight: 800; margin-bottom: 0.5rem;">Exportação do Gabarito do Docente</h2>
+                    <p style="color: var(--text-secondary); margin-bottom: 1.5rem; font-size: 0.95rem;">
+                        Gere a versão impressa ou em PDF ajustada em folha A4 com todos os passos demonstrados para acompanhamento em sala.
+                    </p>
+                    <button class="btn btn-success" onclick="window.print()">
+                        Gerar e Imprimir Gabarito Completo (PDF)
+                    </button>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <!-- RODAPÉ INSTITUCIONAL -->
+    <footer>
+        <div class="container">
+            <p><strong>CEST — Centro Universitário Santa Terezinha</strong> • Curso de Bacharelado em Administração</p>
+            <p style="opacity: 0.7; margin-top: 4px;">Disciplina: Matemática Financeira • Resolução Analítica de Temporalidade & Juros Compostos</p>
+        </div>
+    </footer>
+
+</body>
+</html>
